@@ -25,6 +25,6 @@ Aluksella olevan QR-koodin kautta pääsisi kirjautumaan Purseriin, josta voit m
 ### Teknologiat
 
 
-* [NextJs]
+* NextJs
 * [TypeScript](https://www.typescriptlang.org/)
-* [Postgress]
+* Postgress
