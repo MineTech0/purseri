@@ -9,7 +9,7 @@
   <h1 align="center">Purseri</h1>
 
   <p align="center">
-    PWA suunnattu meripartio lippukunnille, jotka haluavat kätevästi merkata meripäivät digitaaliseen muotoon.
+    PWA suunnattu meripartiolippukunnille, jotka haluavat kätevästi merkata meripäivät digitaaliseen muotoon.
     <br />
   </p>
 </div>
