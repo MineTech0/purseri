@@ -1,4 +1,5 @@
 import React from 'react';
+import MarkForm from './MarkForm';
 
 interface Props {
   
@@ -7,7 +8,7 @@ interface Props {
 const MarkPage = (props : Props): JSX.Element => {
   return (
     <>
-      
+      <MarkForm/>
     </>
   );
 };
