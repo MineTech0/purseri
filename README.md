@@ -9,7 +9,7 @@
   <h1 align="center">Purseri</h1>
 
   <p align="center">
-    PWA suunnattu meripartio lippukunnille, jotka haluavat kätevästi merkata meripäivät digitaaliseen muotoon.
+    PWA suunnattu meripartiolippukunnille, jotka haluavat kätevästi merkata meripäivät digitaaliseen muotoon.
     <br />
   </p>
 </div>
@@ -25,6 +25,6 @@ Aluksella olevan QR-koodin kautta pääsisi kirjautumaan Purseriin, josta voit m
 ### Teknologiat
 
 
-* [NextJs]
+* NextJs
 * [TypeScript](https://www.typescriptlang.org/)
-* [Postgress]
+* Postgress
