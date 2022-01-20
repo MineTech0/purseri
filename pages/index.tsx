@@ -8,7 +8,8 @@ const Home: NextPage = () => {
       display="flex"
       justify="center"
       alignItems="center"
-      css={{ minHeight: '100vh'}}
+      direction='column'
+      css={{ minHeight: '100vh', minWidth: '100vw'}}
     >
       <Container fluid>
         <Row>

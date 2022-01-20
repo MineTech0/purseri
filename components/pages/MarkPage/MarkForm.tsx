@@ -14,7 +14,7 @@ type Inputs = {
 const schema = yup
   .object({
     name: yup.string().required('Nimi vaaditaan'),
-    job: yup.string('Tehtävän pitää olla teksti').required('Tehtävä vaaditaan'),
+    job: yup.string().required('Tehtävä vaaditaan'),
     hours: yup.number().typeError('Tuntien pitää olla numero').positive('Tuntien pitää olla positiivinen numero').required('Tunnit vaaditaan'),
   })
   .required()
@@ -30,9 +30,10 @@ const MarkForm = (props: Props): JSX.Element => {
   })
   const onSubmit: SubmitHandler<Inputs> = (data) => console.log(data)
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <Grid.Container gap={4}>
-        <Grid xs={12}>
+    
+      <Grid.Container gap={4} direction='column' alignItems='center'>
+        <form onSubmit={handleSubmit(onSubmit)}>
+        <Grid md={12}>
           <Text h3>Merkkaa meripäivät</Text>
         </Grid>
         <Grid xs={12}>
@@ -62,7 +63,7 @@ const MarkForm = (props: Props): JSX.Element => {
             bordered
             label="Aika"
             color="default"
-            width="190px"
+            width="300px"
             labelRight="tuntia"
             type='number'
             {...register('hours')}
@@ -71,12 +72,12 @@ const MarkForm = (props: Props): JSX.Element => {
           />
         </Grid>
         <Grid>
-          <Button color="primary" rounded type="submit">
-            Primary
+          <Button width="300px" color="primary" rounded type="submit">
+            Lähetä
           </Button>
         </Grid>
+        </form>
       </Grid.Container>
-    </form>
   )
 }
 

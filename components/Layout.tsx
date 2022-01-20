@@ -9,7 +9,6 @@ const Layout = (props : Props): JSX.Element => {
   return (
     <Container
       fluid
-      css={{ minHeight: '100vh'}}
     >
       {props.children}
     </Container>
