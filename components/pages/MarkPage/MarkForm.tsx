@@ -7,15 +7,15 @@ import * as yup from 'yup'
 interface Props {}
 type Inputs = {
   name: string
-  job: string
-  hours: number
+  reason: string
+  date: number
 }
 
 const schema = yup
   .object({
     name: yup.string().required('Nimi vaaditaan'),
-    job: yup.string().required('Tehtävä vaaditaan'),
-    hours: yup.number().typeError('Tuntien pitää olla numero').positive('Tuntien pitää olla positiivinen numero').required('Tunnit vaaditaan'),
+    reason: yup.string().required('Tehtävä vaaditaan'),
+    date: yup.date().required('Päivä vaaditaan'),
   })
   .required()
 
@@ -31,7 +31,7 @@ const MarkForm = (props: Props): JSX.Element => {
   const onSubmit: SubmitHandler<Inputs> = (data) => console.log(data)
   return (
     
-      <Grid.Container gap={4} direction='column' alignItems='center'>
+      <Grid.Container gap={4} direction='column' alignItems='center' justify='center'>
         <form onSubmit={handleSubmit(onSubmit)}>
         <Grid md={12}>
           <Text h3>Merkkaa meripäivät</Text>
@@ -50,29 +50,29 @@ const MarkForm = (props: Props): JSX.Element => {
         <Grid xs={12}>
           <Input
             bordered
-            label="Tehtävä"
+            label="Syy"
             color="default"
             width="300px"
-            {...register('job')}
+            {...register('reason')}
             helperColor={'error'}
-            helperText={errors.job?.message}
+            helperText={errors.reason?.message}
           />
         </Grid>
         <Grid xs={12}>
           <Input
             bordered
-            label="Aika"
+            label="Päivä"
             color="default"
             width="300px"
-            labelRight="tuntia"
-            type='number'
-            {...register('hours')}
+            type='date'
+            {...register('date')}
+            value={new Date().toISOString().substring(0, 10)}
             helperColor={'error'}
-            helperText={errors.hours?.message}
+            helperText={errors.date?.message}
           />
         </Grid>
         <Grid>
-          <Button width="300px" color="primary" rounded type="submit">
+          <Button size={'md'} color="primary" rounded type="submit">
             Lähetä
           </Button>
         </Grid>
