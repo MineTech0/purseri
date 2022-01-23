@@ -3,12 +3,10 @@ import React from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
+import { MarkFormData } from '../../../types'
 
-interface Props {}
-type Inputs = {
-  name: string
-  reason: string
-  date: number
+interface Props {
+  sendForm: (data: MarkFormData) => void
 }
 
 const schema = yup
@@ -25,10 +23,10 @@ const MarkForm = (props: Props): JSX.Element => {
     handleSubmit,
     watch,
     formState: { errors },
-  } = useForm<Inputs>({
+  } = useForm<MarkFormData>({
     resolver: yupResolver(schema),
   })
-  const onSubmit: SubmitHandler<Inputs> = (data) => console.log(data)
+  const onSubmit: SubmitHandler<MarkFormData> = (data) => console.log(data)
   return (
     
       <Grid.Container gap={4} direction='column' alignItems='center' justify='center'>
