@@ -1,4 +1,4 @@
-import { Button, Grid, Input, Text } from '@nextui-org/react'
+import { Button, Grid, Input, Text, Textarea } from '@nextui-org/react'
 import React from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
@@ -14,7 +14,7 @@ const schema = yup
     name: yup.string().required('Nimi vaaditaan'),
     reason: yup.string().required('Tehtävä vaaditaan'),
     date: yup.date().required('Päivä vaaditaan'),
-    info: yup.string().notRequired()
+    info: yup.string().default('')
   })
   .required()
 
@@ -38,7 +38,7 @@ const RecordForm = (props: Props): JSX.Element => {
         <Grid xs={12}>
           <Input
             bordered
-            label="Nimi"
+            label="Nimi*"
             color="default"
             width="300px"
             {...register('name')}
@@ -49,7 +49,7 @@ const RecordForm = (props: Props): JSX.Element => {
         <Grid xs={12}>
           <Input
             bordered
-            label="Päivä"
+            label="Päivä*"
             color="default"
             width="300px"
             type='date'
@@ -62,7 +62,7 @@ const RecordForm = (props: Props): JSX.Element => {
         <Grid xs={12}>
           <Input
             bordered
-            label="Syy"
+            label="Syy*"
             color="default"
             width="300px"
             {...register('reason')}
@@ -71,7 +71,7 @@ const RecordForm = (props: Props): JSX.Element => {
           />
         </Grid>
         <Grid xs={12}>
-          <Input
+          <Textarea
             bordered
             label="Lisätiedot"
             color="default"
