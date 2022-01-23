@@ -1,2 +1,2 @@
-import MarkPage from "../../components/pages/MarkPage";
-export default MarkPage
+import RecordPage from "../../components/pages/RecordPage";
+export default RecordPage
