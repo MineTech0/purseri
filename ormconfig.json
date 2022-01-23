@@ -1,0 +1,14 @@
+{
+    "type": "postgres",
+    "host": "localhost",
+    "port": 5432,
+    "username": "postgres",
+    "password": "postgres",
+    "database": "purseri",
+    "entities": ["lib/db/entity/*{.js,.ts}"],
+    "migrations": ["lib/db/migration/*{.js,.ts}"],
+    "cli": {
+        "entitiesDir": "lib/db/entity/",
+        "migrationsDir": "lib/db/migration"
+    }
+ }
