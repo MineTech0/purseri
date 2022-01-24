@@ -12,7 +12,7 @@ export class Record {
     @Column('varchar')
     reason: string
 
-    @Column('date')
+    @Column('timestamptz')
     date: Date
 
     @Column('text')

@@ -1,15 +1,18 @@
-import {createConnection} from "typeorm";
+import { Record } from './entity/Record';
+import 'reflect-metadata';
+import { createConnection, getConnection, getConnectionOptions } from 'typeorm';
 
- const connection = async () => await createConnection({
-    type: "postgres",
-    host: "localhost",
-    port: 5432,
-    username: "postgres",
-    password: "postgres",
-    database: "purseri",
-    entities: ["/entity/*{.js,.ts}"],
-    migrations: ["/migration/*{.js,.ts}"],
-    synchronize: true
- });
+export async function connection() {
+  const options = await getConnectionOptions()
+  try {
+    const conn = getConnection();
+    return conn;
+  } catch (e) {
+    return createConnection({
+      entities: [Record],
+      ...options
+    });
+  }
+}
 
- export default connection
+export default connection

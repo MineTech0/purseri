@@ -1,12 +1,12 @@
 import { Record } from './../../../lib/db/entity/Record'
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { getConnection, getRepository } from 'typeorm'
+import { getConnection, getManager, getRepository } from 'typeorm'
 import connection from '../../../lib/db/connection'
-import { validate } from 'class-validator'
+import { validate,  ValidationError } from 'class-validator'
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<Record | Record[] | Er>
+  res: NextApiResponse<Record | Record[] | ValidationError[]>
 ) {
   await connection()
   const recordRepo = getRepository(Record)
@@ -26,17 +26,14 @@ export default async function handler(
   }
 
   async function createRecord() {
-    try {
-      const record = recordRepo.create(req.body)
-      const errors = await validate(record)
-      if (errors.length > 0) {
-        return res.status(400).json({ message: error })
-      } else {
-        await getManager().save(post)
-      }
-      return res.status(200).json({ name, date, reason, info })
-    } catch (error) {
-      
+    const record = recordRepo.create(req.body)
+    const errors = await validate(record)
+
+    if (errors.length > 0) {
+      return res.status(400).json(errors)
+    } else {
+      await getManager().save(record)
+      return res.status(200).json(record)
     }
   }
 }
