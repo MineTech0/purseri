@@ -5,8 +5,8 @@
     "username": "postgres",
     "password": "postgres",
     "database": "purseri",
-    "entities": ["lib/db/entity/*{.js,.ts}"],
-    "migrations": ["lib/db/migration/*{.js,.ts}"],
+    "migrations": ["../lib/db/migration/*{.js,.ts}"],
+    "synchronize": true,
     "cli": {
         "entitiesDir": "lib/db/entity/",
         "migrationsDir": "lib/db/migration"
