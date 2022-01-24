@@ -18,7 +18,7 @@ const schema = yup
   })
   .required()
 
-const RecordForm = (props: Props): JSX.Element => {
+const RecordForm = ({sendForm}: Props): JSX.Element => {
   const {
     register,
     handleSubmit,
@@ -27,7 +27,7 @@ const RecordForm = (props: Props): JSX.Element => {
   } = useForm<RecordFormData>({
     resolver: yupResolver(schema),
   })
-  const onSubmit: SubmitHandler<RecordFormData> = (data) => console.log(data)
+  const onSubmit: SubmitHandler<RecordFormData> = (data) => sendForm(data)
   return (
     
       <Grid.Container gap={4} direction='column' alignItems='center' justify='center'>
@@ -54,7 +54,7 @@ const RecordForm = (props: Props): JSX.Element => {
             width="300px"
             type='date'
             {...register('date')}
-            value={new Date().toISOString().substring(0, 10)}
+            initialValue={new Date().toISOString().substring(0, 10)}
             helperColor={'error'}
             helperText={errors.date?.message}
           />
@@ -70,7 +70,7 @@ const RecordForm = (props: Props): JSX.Element => {
             helperText={errors.reason?.message}
           />
         </Grid>
-        <Grid xs={12}>
+        <Grid xs={'12'}>
           <Textarea
             bordered
             label="Lisätiedot"
