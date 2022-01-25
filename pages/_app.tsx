@@ -1,13 +1,15 @@
 import '../styles/globals.css'
 import type { AppProps } from 'next/app'
 import { NextUIProvider } from '@nextui-org/react'
-import Layout from '../components/Layout'
+import { SessionProvider } from 'next-auth/react'
 
-function MyApp({ Component, pageProps }: AppProps) {
+function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
   return (
-    <NextUIProvider>
+    <SessionProvider session={session}>
+      <NextUIProvider>
         <Component {...pageProps} />
-    </NextUIProvider>
+      </NextUIProvider>
+    </SessionProvider>
   )
 }
 
