@@ -70,7 +70,7 @@ const RecordForm = ({sendForm}: Props): JSX.Element => {
             helperText={errors.reason?.message}
           />
         </Grid>
-        <Grid xs={'12'}>
+        <Grid xs>
           <Textarea
             bordered
             label="Lisätiedot"
