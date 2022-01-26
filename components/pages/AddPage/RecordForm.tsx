@@ -29,12 +29,8 @@ const RecordForm = ({sendForm}: Props): JSX.Element => {
   })
   const onSubmit: SubmitHandler<RecordFormData> = (data) => sendForm(data)
   return (
-    
-      <Grid.Container gap={4} direction='column' alignItems='center' justify='center'>
+      <Grid.Container gap={4} direction='column' >
         <form onSubmit={handleSubmit(onSubmit)}>
-        <Grid md={12}>
-          <Text h3>Merkkaa meripäivät</Text>
-        </Grid>
         <Grid xs={12}>
           <Input
             bordered

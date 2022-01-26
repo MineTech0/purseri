@@ -1,4 +1,4 @@
-import { RecordFormData } from './../types.d';
+import { RecordFormData, RecordFormDataWithShip } from './../types.d';
 import { Record } from './../lib/db/entity/Record';
 import instance from "./instance";
 
@@ -10,7 +10,7 @@ class RecordService {
     async getAll() { 
         return await instance.get<Record[]>(`/records`);
     }
-    async create(formData: RecordFormData){
+    async create(formData: RecordFormDataWithShip){
         return await instance.post<Record>("/records", formData);
     }
 }
