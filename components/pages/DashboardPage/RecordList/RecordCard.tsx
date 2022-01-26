@@ -1,13 +1,15 @@
 import { Button, Card, Grid, Text } from '@nextui-org/react'
 import React from 'react'
 
-interface Props {}
+interface Props {
+    
+}
 
 const RecordCard = (props: Props): JSX.Element => {
   return (
-    <Card clickable onClick={()=> console.log('Card clicked')} >
+    <Card >
       <Grid.Container justify="space-between" alignItems='center'>
-        <Grid>
+        <Grid onClick={()=> console.log('Card clicked')}>
           <Grid.Container direction='column'>
             <Grid>
               <Text b size={17}>
