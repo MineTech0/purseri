@@ -1,4 +1,5 @@
-import {Column, Entity, PrimaryGeneratedColumn} from "typeorm";
+import {Column, Entity, ManyToOne, PrimaryGeneratedColumn} from "typeorm";
+import { Ship } from "./Ship";
 
 @Entity('records')
 export class Record {
@@ -17,4 +18,7 @@ export class Record {
 
     @Column('text')
     info: string
+
+    @ManyToOne(() => Ship, ship => ship.records)
+    ship: Ship;
 }
