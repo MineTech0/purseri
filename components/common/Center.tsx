@@ -2,7 +2,7 @@ import { Container } from '@nextui-org/react'
 import React from 'react'
 
 interface Props {
-  children: JSX.Element
+  children?: JSX.Element
 }
 
 const Center = (props: Props): JSX.Element => {
