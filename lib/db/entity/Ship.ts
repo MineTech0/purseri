@@ -1,4 +1,6 @@
-import {Column, Entity, PrimaryGeneratedColumn} from "typeorm";
+import { UserEntity } from './authEntities';
+import { Record } from './Record';
+import {Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn} from "typeorm";
 
 @Entity('ships')
 export class Ship {
@@ -13,4 +15,10 @@ export class Ship {
 
     @Column('shipmaster')
     shipmaster: string
+
+    @OneToMany(() => Record, record => record.ship)
+    records: Record[];
+
+    @ManyToOne(() => UserEntity, user => user.ships)
+    user: UserEntity;
 }
