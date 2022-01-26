@@ -1,4 +1,6 @@
-{
+import { ConnectionOptions } from "typeorm"
+
+const options: ConnectionOptions =  {
     "type": "postgres",
     "host": "localhost",
     "port": 5432,
@@ -12,3 +14,4 @@
         "migrationsDir": "lib/db/migration"
     }
  }
+ export default options
