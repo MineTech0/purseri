@@ -9,7 +9,7 @@ interface Props {
 
 const NewShipPage = (props : Props): JSX.Element => {
     const sendFormHandler = (data: ShipFormData) => {
-      
+      console.log(data)
     }
     
   return (

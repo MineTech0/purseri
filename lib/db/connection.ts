@@ -1,18 +1,15 @@
-import { Record } from './entity/Record';
 import 'reflect-metadata';
 import { createConnection, getConnection, getConnectionOptions } from 'typeorm';
-import { Ship } from './entity/Ship';
+import allEntities from './allEntities';
 
 export async function connection() {
   const options = await getConnectionOptions()
+  Object.assign(options, { entities:allEntities});
   try {
     const conn = getConnection();
     return conn;
   } catch (e) {
-    return createConnection({
-      entities: [Record, Ship],
-      ...options
-    });
+    return createConnection(options);
   }
 }
 

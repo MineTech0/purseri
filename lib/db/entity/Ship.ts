@@ -1,19 +1,19 @@
-import { UserEntity } from './authEntities';
 import { Record } from './Record';
 import {Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn} from "typeorm";
+import { UserEntity } from './entities';
 
 @Entity('ships')
 export class Ship {
     @PrimaryGeneratedColumn("uuid")
     id: string
 
-    @Column('name')
+    @Column('varchar')
     name: string
 
-    @Column('owner')
+    @Column('varchar')
     owner: string
 
-    @Column('shipmaster')
+    @Column('varchar')
     shipmaster: string
 
     @OneToMany(() => Record, record => record.ship)
