@@ -10,7 +10,7 @@ const DashboardPage = (): JSX.Element => {
   const { data: session, status } = useSession()
   return (
     <Layout>
-      <p>Signed in as {session?.user.name} <a href="/api/auth/signout">Sign out</a></p>
+      <p>Signed in as {session?.user?.name || null} <a href="/api/auth/signout">Sign out</a></p>
       <Grid.Container gap={2} direction="column">
         <Grid xs={12}>
           <ShipSelector ships={[]} />
