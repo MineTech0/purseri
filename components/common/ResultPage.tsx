@@ -1,6 +1,6 @@
 import { Card, Text } from '@nextui-org/react';
 import React from 'react';
-import Center from '../../common/Center';
+import Center from './Center';
 
 interface Props {
   type: 'success' | 'error';
