@@ -1,16 +1,21 @@
-import 'reflect-metadata';
-import { createConnection, getConnection, getConnectionOptions } from 'typeorm';
-import allEntities from './allEntities';
+import 'reflect-metadata'
+import { createConnection, getConnection, getConnectionOptions } from 'typeorm'
+import allEntities from './allEntities'
 
-export async function connection() {
+let connectionCreated = false
+
+export default async function connection() {
   const options = await getConnectionOptions()
-  Object.assign(options, { entities:allEntities});
+  Object.assign(options, { entities: allEntities })
   try {
-    const conn = getConnection();
-    return conn;
+    const currentConnection = await getConnection()
+    if (connectionCreated) {
+      return currentConnection
+    }
+    await currentConnection.close()
   } catch (e) {
-    return createConnection(options);
+    // ignore connection error
   }
+  connectionCreated = true
+  return await createConnection(options)
 }
-
-export default connection
