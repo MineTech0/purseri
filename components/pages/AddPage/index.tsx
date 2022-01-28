@@ -2,11 +2,11 @@ import { Grid, Text } from '@nextui-org/react'
 import React, { useState } from 'react'
 import { Ship } from '../../../lib/db/entity/Ship'
 import RecordService from '../../../services/RecordService'
-import { RecordFormData } from '../../../types'
+import { FormResult, RecordFormData } from '../../../types'
 import ShipInfo from '../../common/ShipInfo'
 import Layout from '../../Layout'
 import RecordForm from './RecordForm'
-import ResultPage from './ResultPage'
+import ResultPage from '../../common/ResultPage'
 
 interface Props {
   ship: Ship
@@ -15,7 +15,7 @@ interface Props {
 const AddPage = ({ ship }: Props): JSX.Element => {
   console.log(ship)
   const [result, setResult] =
-    useState<{ type: 'success' | 'error'; message: string }>()
+    useState<FormResult>()
 
   const sendFormHandler = (data: RecordFormData) => {
     RecordService.create({
