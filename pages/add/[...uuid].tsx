@@ -10,8 +10,9 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   await connection()
   const shipRepo = getRepository(Ship)
   let ship = null
+  console.log(uuid)
   try {
-    ship = await shipRepo.findOneOrFail(uuid as string, {
+    ship = await shipRepo.findOneOrFail(uuid[0], {
       relations: ['records'],
     })
   } catch (error) {
@@ -22,7 +23,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
   return {
     props: {
-      ship,
+      ship: JSON.parse(JSON.stringify(ship)),
     },
   }
 }
