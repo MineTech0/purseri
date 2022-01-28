@@ -13,7 +13,6 @@ interface Props {
 }
 
 const AddPage = ({ ship }: Props): JSX.Element => {
-  console.log(ship)
   const [result, setResult] =
     useState<FormResult>()
 
@@ -39,9 +38,9 @@ const AddPage = ({ ship }: Props): JSX.Element => {
 
   return (
     <Layout>
-      <Grid.Container direction="column">
+      <Grid.Container direction="column" gap={2}>
         <Grid>
-          <Text size={20}>Ilmoita meripäivä</Text>
+          <Text h2>Ilmoita meripäivä</Text>
         </Grid>
         <Grid>
           <ShipInfo />

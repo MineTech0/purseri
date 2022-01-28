@@ -7,6 +7,12 @@ import { Ship } from '../../lib/db/entity/Ship'
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const { uuid } = context.query
 
+  if(!uuid){
+    return {
+        notFound: true,
+      }
+  }
+
   await connection()
   const shipRepo = getRepository(Ship)
   let ship = null

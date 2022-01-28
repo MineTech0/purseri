@@ -29,25 +29,25 @@ const RecordForm = ({sendForm}: Props): JSX.Element => {
   })
   const onSubmit: SubmitHandler<RecordFormData> = (data) => sendForm(data)
   return (
-      <Grid.Container gap={4} direction='column' >
+      <Grid.Container gap={2} direction='column' wrap='wrap' >
         <form onSubmit={handleSubmit(onSubmit)}>
-        <Grid xs={12}>
+        <Grid >
           <Input
             bordered
+            css={{w:'100%'}}
             label="Nimi*"
             color="default"
-            width="300px"
             {...register('name')}
             helperColor={'error'}
             helperText={errors.name?.message}
           />
         </Grid>
-        <Grid xs={12}>
+        <Grid >
           <Input
+          css={{w:'100%'}}
             bordered
             label="Päivä*"
             color="default"
-            width="300px"
             type='date'
             {...register('date')}
             initialValue={new Date().toISOString().substring(0, 10)}
@@ -55,23 +55,23 @@ const RecordForm = ({sendForm}: Props): JSX.Element => {
             helperText={errors.date?.message}
           />
         </Grid>
-        <Grid xs={12}>
+        <Grid >
           <Input
             bordered
+            css={{w:'100%'}}
             label="Syy*"
             color="default"
-            width="300px"
             {...register('reason')}
             helperColor={'error'}
             helperText={errors.reason?.message}
           />
         </Grid>
-        <Grid xs>
+        <Grid>
           <Textarea
             bordered
+            css={{w:'100%'}}
             label="Lisätiedot"
             color="default"
-            width="300px"
             {...register('info')}
             helperColor={'error'}
             helperText={errors.info?.message}
@@ -79,7 +79,7 @@ const RecordForm = ({sendForm}: Props): JSX.Element => {
         </Grid>
       
         <Grid>
-          <Button size={'md'} color="primary" rounded type="submit">
+          <Button size={'md'} color="primary" rounded type="submit" css={{w:'100%'}}>
             Lähetä
           </Button>
         </Grid>
