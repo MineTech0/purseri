@@ -11,7 +11,6 @@ interface Props {
 }
 
 const ShipSelector = ({ships, selectShipHandler} : Props): JSX.Element => {
-  console.log(ships)
   const router = useRouter()
     const addShipHandler = () => {
       router.push('dashboard/ship/new')
