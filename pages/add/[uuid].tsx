@@ -18,7 +18,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   let ship = null
   console.log(uuid)
   try {
-    ship = await shipRepo.findOneOrFail(uuid[0], {
+    ship = await shipRepo.findOneOrFail(uuid as string, {
       relations: ['records'],
     })
   } catch (error) {

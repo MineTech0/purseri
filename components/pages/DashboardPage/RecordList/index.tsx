@@ -1,16 +1,25 @@
 import { Card, Grid, Text } from '@nextui-org/react'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Record } from '../../../../lib/db/entity/Record'
 import { Ship } from '../../../../lib/db/entity/Ship'
+import ShipService from '../../../../services/ShipService'
 import NoRecordsText from './NoRecordsText'
 import RecordCard from './RecordCard'
 
 interface Props {
-  records: Record[] | null
+  ship: Ship;
 }
 
-const RecordList = ({records}: Props): JSX.Element | null => {
-  if(!records) return <NoRecordsText/>
+const RecordList = ({ship}: Props): JSX.Element | null => {
+
+  const [records, setRecords] = useState<Record[]>([])
+
+  useEffect(() => {
+    ShipService.getShipRecords(ship.id).then(rec => {
+      setRecords(rec)
+    })
+  }, [ship])
+  if(records.length === 0) return <NoRecordsText/>
   return (
     <Grid.Container direction="column" gap={1}>
       <Grid>

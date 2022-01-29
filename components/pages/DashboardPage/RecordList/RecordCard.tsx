@@ -18,7 +18,7 @@ const RecordCard = ({record}: Props): JSX.Element => {
               </Text>
             </Grid>
             <Grid>
-              <Text b>{record.date.toLocaleDateString()}</Text>
+              <Text b>{new Date(record.date).toLocaleDateString('fi-FI')}</Text>
             </Grid>
             <Grid>
               <Text>{record.reason}</Text>
