@@ -1,18 +1,14 @@
-import { Button } from '@nextui-org/react';
-import React from 'react';
-import { Ship } from '../../../../lib/db/entity/Ship';
+import { Button } from '@nextui-org/react'
+import React from 'react'
+import { Ship } from '../../../../lib/db/entity/Ship'
 
 interface Props {
-  ship: Ship;
-  selectShip: (shipId : string) => void
+  ship: Ship
+  selectShip: (shipId: string) => void
 }
 
-const ShipButton = ({ship, selectShip} : Props): JSX.Element => {
-  return (
-    <>
-      <Button onClick={() => selectShip(ship.id)}>{ship}</Button>
-    </>
-  );
-};
+const ShipButton = ({ ship, selectShip }: Props): JSX.Element => {
+  return <Button onClick={() => selectShip(ship.id)}>{ship.name}</Button>
+}
 
-export default ShipButton;
+export default ShipButton

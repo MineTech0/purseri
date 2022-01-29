@@ -6,18 +6,16 @@ import AddShipButton from './AddShipButton';
 import ShipButton from './ShipButton';
 
 interface Props {
-  ships: Ship[]
+  ships: Ship[];
+  selectShipHandler: (id: string) => void
 }
 
-const ShipSelector = ({ships} : Props): JSX.Element => {
+const ShipSelector = ({ships, selectShipHandler} : Props): JSX.Element => {
+  console.log(ships)
   const router = useRouter()
     const addShipHandler = () => {
       router.push('dashboard/ship/new')
     }
-    const selectShipHandler = () => {
-      
-    }
-    
 
     if(ships.length === 0){
         return (
@@ -26,7 +24,7 @@ const ShipSelector = ({ships} : Props): JSX.Element => {
     }
   return (
     <Button.Group>
-        {ships.map((ship) => <ShipButton key={ship.id} ship={ship} selectShip={selectShipHandler}/>)}
+        {ships.map((ship) => (<ShipButton key={ship.id} ship={ship} selectShip={selectShipHandler}/>))}
         <AddShipButton addShip={addShipHandler}/>
     </Button.Group>
   );

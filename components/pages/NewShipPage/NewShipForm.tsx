@@ -12,7 +12,7 @@ import {
 import React from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import * as yup from 'yup'
-import { ShipFormData } from '../../../types'
+import { ShipFormData } from '../../../types/types'
 
 interface Props {
   sendForm: (data: ShipFormData) => void

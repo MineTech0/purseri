@@ -1,5 +1,5 @@
 import { Ship } from "../lib/db/entity/Ship";
-import { ShipFormData } from "../types";
+import { ShipFormData } from "../types/types";
 import instance from "./instance";
 
 

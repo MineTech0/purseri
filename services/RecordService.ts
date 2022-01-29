@@ -1,4 +1,4 @@
-import { RecordFormData, RecordFormDataWithShip } from './../types.d';
+import { RecordFormData, RecordFormDataWithShip } from '../types/types';
 import { Record } from './../lib/db/entity/Record';
 import instance from "./instance";
 

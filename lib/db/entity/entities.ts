@@ -42,7 +42,7 @@ import { Ship } from "./Ship"
     @OneToMany(() => AccountEntity, (account) => account.userId)
     accounts!: AccountEntity[]
 
-    @OneToMany(() => Ship, (ship) => ship.user)
+    @OneToMany(() => Ship, ship => ship.user)
     ships!: Ship[]
 
 
