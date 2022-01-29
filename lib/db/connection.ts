@@ -8,7 +8,7 @@ export default async function connection() {
   const options = await getConnectionOptions()
   Object.assign(options, { entities: allEntities })
   try {
-    const currentConnection = await getConnection()
+    const currentConnection = getConnection()
     if (connectionCreated) {
       return currentConnection
     }

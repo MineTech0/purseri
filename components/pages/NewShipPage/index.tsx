@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router'
 import React, { useState } from 'react'
 import ShipService from '../../../services/ShipService'
-import { FormResult, ShipFormData } from '../../../types'
+import { FormResult, ShipFormData } from '../../../types/types'
 import ResultPage from '../../common/ResultPage'
 import Layout from '../../Layout'
 import NewShipForm from './NewShipForm'

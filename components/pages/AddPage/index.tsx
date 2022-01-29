@@ -2,7 +2,7 @@ import { Grid, Text } from '@nextui-org/react'
 import React, { useState } from 'react'
 import { Ship } from '../../../lib/db/entity/Ship'
 import RecordService from '../../../services/RecordService'
-import { FormResult, RecordFormData } from '../../../types'
+import { FormResult, RecordFormData } from '../../../types/types'
 import ShipInfo from '../../common/ShipInfo'
 import Layout from '../../Layout'
 import RecordForm from './RecordForm'
@@ -43,7 +43,7 @@ const AddPage = ({ ship }: Props): JSX.Element => {
           <Text h2>Ilmoita meripäivä</Text>
         </Grid>
         <Grid>
-          <ShipInfo />
+          <ShipInfo ship={ship} />
         </Grid>
         <Grid>
           <RecordForm sendForm={sendFormHandler} />

@@ -27,6 +27,7 @@ export default async function handler(
 
   async function createShip() {
     const ship = shipRepo.create(req.body)
+    
     const errors = await validate(ship)
 
     if (errors.length > 0) {

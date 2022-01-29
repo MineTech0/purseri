@@ -21,6 +21,12 @@ adapter: TypeORMLegacyAdapter({
         clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
       }),
   ],
-  secret: 'secret'
+  secret: 'secret',
+  callbacks: {
+    async session({ session, user }) {
+      session.user = user
+      return session
+    }
+  }
 })
 
