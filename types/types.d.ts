@@ -11,6 +11,15 @@ export interface ShipFormData {
   name: string
   owner: string
   shipmaster: string
+  idLetters: string
+  imo: string
+  gt: number
+  power: number
+  length: number
+  nationality: string
+  home: string
+  address: string
+  area: number
 }
 export interface FormResult {
   type: 'success' | 'error'

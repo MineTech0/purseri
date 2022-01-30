@@ -23,12 +23,12 @@ export class Ship {
     imo: string
 
     @Column('int')
-    GT: number
+    gt: number
 
     @Column('int')
     power: number
 
-    @Column('number')
+    @Column('decimal')
     length: number
 
     @Column('varchar')
