@@ -38,7 +38,7 @@ const AddPage = ({ ship }: Props): JSX.Element => {
     <Layout>
       <Grid.Container direction="column" gap={2}>
         <Grid>
-          <Text h2>Ilmoita meripäivä</Text>
+          <Text h2={true}>Ilmoita meripäivä</Text>
         </Grid>
         <Grid>
           <ShipInfo ship={ship} />

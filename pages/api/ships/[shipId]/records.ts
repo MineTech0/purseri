@@ -1,18 +1,18 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { getConnection, getManager, getRepository } from 'typeorm'
+import { getManager, getRepository } from 'typeorm'
 import { validate, ValidationError } from 'class-validator'
 import { Record } from '../../../../lib/db/entity/Record'
-import connection from '../../../../lib/db/connection'
 import { Ship } from '../../../../lib/db/entity/Ship'
+import { getConn } from '../../../../lib/db/connection'
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<Record | Record[] | ValidationError[]>
 ) {
   const { shipId } = req.query
-  await connection()
-  const recordRepo = getRepository(Record)
-  const shipRepo = getRepository(Ship)
+  const conn = await getConn()
+  const recordRepo = conn.getRepository(Record)
+  const shipRepo = conn.getRepository(Ship)
 
   switch (req.method) {
     case 'GET':
@@ -32,8 +32,7 @@ export default async function handler(
   }
 
   async function createShipRecord() {
-    let record = recordRepo.create(req.body)
-    console.log(record)
+    let record = recordRepo.create(req.body as Object)
     const errors = await validate(record)
 
     if (errors.length > 0) {

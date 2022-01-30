@@ -6,6 +6,7 @@ import ShipInfo from '../../common/ShipInfo'
 import ShipSelector from './ShipSelector'
 import { useSession } from 'next-auth/react'
 import { Ship } from '../../../lib/db/entity/Ship'
+import Link from 'next/link'
 
 const DashboardPage = ({ ships }: { ships: Ship[] }): JSX.Element => {
   const { data: session } = useSession()
@@ -19,7 +20,7 @@ const DashboardPage = ({ ships }: { ships: Ship[] }): JSX.Element => {
     <Layout>
       <p>
         Signed in as {session?.user.name || null}{' '}
-        <a href="/api/auth/signout">Sign out</a>
+        <Link href="/api/auth/signout"><a >Sign out</a></Link>
       </p>
       <Grid.Container gap={2} direction="column">
         <Grid xs={12}>

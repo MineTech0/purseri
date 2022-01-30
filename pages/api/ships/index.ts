@@ -1,15 +1,15 @@
 import { Ship } from './../../../lib/db/entity/Ship'
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { getConnection, getManager, getRepository } from 'typeorm'
-import connection from '../../../lib/db/connection'
+import { getManager, getRepository } from 'typeorm'
 import { validate,  ValidationError } from 'class-validator'
+import { getConn } from '../../../lib/db/connection'
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<Ship | Ship[] | ValidationError[]>
 ) {
-  await connection()
-  const shipRepo = getRepository(Ship)
+  const conn = await getConn()
+  const shipRepo = conn.getRepository(Ship)
 
   switch (req.method) {
     case 'GET':

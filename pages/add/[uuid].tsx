@@ -1,7 +1,7 @@
 import { GetServerSideProps } from 'next'
 import { getRepository } from 'typeorm'
 import AddPage from '../../components/pages/AddPage'
-import connection from '../../lib/db/connection'
+import { getConn } from '../../lib/db/connection'
 import { Ship } from '../../lib/db/entity/Ship'
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
@@ -12,11 +12,9 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         notFound: true,
       }
   }
-
-  await connection()
-  const shipRepo = getRepository(Ship)
+  const conn = await getConn()
+  const shipRepo = conn.getRepository(Ship)
   let ship = null
-  console.log(uuid)
   try {
     ship = await shipRepo.findOneOrFail(uuid as string, {
       relations: ['records'],
