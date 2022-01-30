@@ -22,6 +22,15 @@ const schema = yup
     name: yup.string().required('Nimi vaaditaan'),
     owner: yup.string().required('Omistaja vaaditaan'),
     shipmaster: yup.string().required('Laivanisäntä vaaditaan'),
+    idLetters: yup.string().required('Tunnuskirjaimet vaaditaan'),
+    imo: yup.string().required('Imo-nro vaaditaan'),
+    gt: yup.number().typeError('Pitää olla numero'),
+    power: yup.number().typeError('Pitää olla numero'),
+    length: yup.number().typeError('Pitää olla numero'),
+    nationality: yup.string().required('Vaaditaan'),
+    home: yup.string().required('Vaaditaan'),
+    address: yup.string().required('Vaaditaan'),
+    area: yup.number().typeError('Pitää olla numero'),
   })
   .required()
 
