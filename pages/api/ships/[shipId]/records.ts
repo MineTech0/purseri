@@ -4,12 +4,13 @@ import { validate, ValidationError } from 'class-validator'
 import { Record } from '../../../../lib/db/entity/Record'
 import { Ship } from '../../../../lib/db/entity/Ship'
 import { getConn } from '../../../../lib/db/connection'
+import { instanceToPlain } from 'class-transformer';
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<Record | Record[] | ValidationError[]>
+  res: NextApiResponse<Record | Record[] | ValidationError[] | {name:string, count: number}>
 ) {
-  const { shipId } = req.query
+  const { shipId, name } = req.query
   const conn = await getConn()
   const recordRepo = conn.getRepository(Record)
   const shipRepo = conn.getRepository(Ship)
@@ -24,11 +25,25 @@ export default async function handler(
   }
 
   async function getShipRecords() {
-    const records = await recordRepo
+    if (name) {
+      const records = await conn
+      .createQueryBuilder()
+      .select('record.name, COUNT(record.id)', 'count' )
+      .from(Record,'record')
+      .where('record.ship = :id', { id: shipId })
+      .groupBy('record.name')
+      .getRawMany()
+    return res.status(200).json(records)
+
+    }
+    else {
+      const records = await recordRepo
       .createQueryBuilder('record')
       .where('record.ship = :id', { id: shipId })
       .getMany()
     return res.status(200).json(records)
+    }
+    
   }
 
   async function createShipRecord() {

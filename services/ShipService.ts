@@ -21,5 +21,8 @@ class ShipService {
     async getShipRecords(shipId: string) { 
         return (await instance.get<Record[]>(`/ships/${shipId}/records`)).data;
     }
+    async getShipRecordByName(shipId: string) { 
+        return (await instance.get<Record[]>(`/ships/${shipId}/records?name=true`)).data;
+    }
 }
 export default new ShipService
