@@ -16,6 +16,33 @@ export class Ship {
     @Column('varchar')
     shipmaster: string
 
+    @Column('varchar')
+    idLetters: string
+
+    @Column('varchar')
+    imo: string
+
+    @Column('int')
+    GT: number
+
+    @Column('int')
+    power: number
+
+    @Column('number')
+    length: number
+
+    @Column('varchar')
+    nationality: string
+
+    @Column('varchar')
+    home: string
+
+    @Column('varchar')
+    address: string
+
+    @Column('int')
+    area: number
+
     @OneToMany(() => Record, record => record.ship)
     records: Record[];
 
