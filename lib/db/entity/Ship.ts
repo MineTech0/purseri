@@ -1,6 +1,7 @@
 import { Record } from './Record';
 import {Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn} from "typeorm";
 import { UserEntity } from './entities';
+import { CrewMember } from './Crewmember';
 
 @Entity('ships')
 export class Ship {
@@ -45,6 +46,9 @@ export class Ship {
 
     @OneToMany(() => Record, record => record.ship)
     records: Record[];
+
+    @OneToMany(() => CrewMember, member => member.ship)
+    crew: CrewMember[];
 
     @ManyToOne(() => UserEntity, user => user.ships)
     user: UserEntity;

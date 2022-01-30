@@ -1,4 +1,6 @@
+
 import {Column, Entity, ManyToOne, PrimaryGeneratedColumn} from "typeorm";
+import { CrewMember } from "./Crewmember";
 import { Ship } from "./Ship";
 
 @Entity('records')
@@ -8,7 +10,10 @@ export class Record {
     id:string;
 
     @Column('varchar')
-    name: string
+    firstName : string
+
+    @Column('varchar')
+    lastName : string
 
     @Column('varchar')
     reason: string
@@ -21,4 +26,7 @@ export class Record {
 
     @ManyToOne(() => Ship, ship => ship.records)
     ship: Ship;
+
+    @ManyToOne(() => CrewMember, member => member.records)
+    crewMember: CrewMember;
 }
