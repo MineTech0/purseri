@@ -1,5 +1,6 @@
 export interface RecordFormData {
-  name: string
+  firstName: string
+  lastName: string
   reason: string
   date: Date
   info: string

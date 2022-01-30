@@ -1,4 +1,4 @@
-import { Button, Grid, Input, Text, Textarea } from '@nextui-org/react'
+import { Button, Col, Grid, Input, Row, Text, Textarea } from '@nextui-org/react'
 import React from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
@@ -29,19 +29,32 @@ const RecordForm = ({sendForm}: Props): JSX.Element => {
   })
   const onSubmit: SubmitHandler<RecordFormData> = (data) => sendForm(data)
   return (
-      <Grid.Container gap={2} direction='column' wrap='wrap' >
+      <Grid.Container gap={2} direction='column' >
         <form onSubmit={handleSubmit(onSubmit)}>
-        <Grid >
+        
+          <Grid>
           <Input
             bordered
             css={{w:'100%'}}
-            label="Nimi*"
+            label="Etunimi*"
             color="default"
-            {...register('name')}
+            {...register('firstName')}
             helperColor={'error'}
-            helperText={errors.name?.message}
+            helperText={errors.firstName?.message}
           />
-        </Grid>
+          </Grid>
+          <Grid>
+          <Input
+            bordered
+            css={{w:'100%'}}
+            label="Sukunimi*"
+            color="default"
+            {...register('lastName')}
+            helperColor={'error'}
+            helperText={errors.lastName?.message}
+          />
+          </Grid>
+        
         <Grid >
           <Input
           css={{w:'100%'}}
