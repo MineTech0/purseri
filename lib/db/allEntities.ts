@@ -1,4 +1,4 @@
-import { CrewMember } from './entity/Crewmember';
+import { CrewMember } from './entity/CrewMember';
 import { AccountEntity, SessionEntity, UserEntity, VerificationTokenEntity } from './entity/entities';
 import { Record } from "./entity/Record"
 import { Ship } from "./entity/Ship"

@@ -1,6 +1,6 @@
 
 import {Column, Entity, ManyToOne, PrimaryGeneratedColumn} from "typeorm";
-import { CrewMember } from "./Crewmember";
+import { CrewMember } from "./CrewMember";
 import { Ship } from "./Ship";
 
 @Entity('records')

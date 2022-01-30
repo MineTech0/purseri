@@ -1,7 +1,7 @@
 import { Record } from './Record';
 import {Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn} from "typeorm";
 import { UserEntity } from './entities';
-import { CrewMember } from './Crewmember';
+import { CrewMember } from './CrewMember';
 
 @Entity('ships')
 export class Ship {
