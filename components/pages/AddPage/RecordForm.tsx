@@ -14,11 +14,11 @@ const schema = yup
     name: yup.string().required('Nimi vaaditaan'),
     reason: yup.string().required('Tehtävä vaaditaan'),
     date: yup.date().required('Päivä vaaditaan'),
-    info: yup.string().default('')
+    info: yup.string().default(''),
   })
   .required()
 
-const RecordForm = ({sendForm}: Props): JSX.Element => {
+const RecordForm = ({ sendForm }: Props): JSX.Element => {
   const {
     register,
     handleSubmit,
@@ -29,49 +29,48 @@ const RecordForm = ({sendForm}: Props): JSX.Element => {
   })
   const onSubmit: SubmitHandler<RecordFormData> = (data) => sendForm(data)
   return (
-      <Grid.Container gap={2} direction='column' >
-        <form onSubmit={handleSubmit(onSubmit)}>
-        
-          <Grid>
+    <Grid.Container gap={2} direction="column">
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <Grid>
           <Input
             bordered
-            css={{w:'100%'}}
+            css={{ w: '100%' }}
             label="Etunimi*"
             color="default"
             {...register('firstName')}
             helperColor={'error'}
             helperText={errors.firstName?.message}
           />
-          </Grid>
-          <Grid>
+        </Grid>
+        <Grid>
           <Input
             bordered
-            css={{w:'100%'}}
+            css={{ w: '100%' }}
             label="Sukunimi*"
             color="default"
             {...register('lastName')}
             helperColor={'error'}
             helperText={errors.lastName?.message}
           />
-          </Grid>
-        
-        <Grid >
+        </Grid>
+
+        <Grid>
           <Input
-          css={{w:'100%'}}
+            css={{ w: '100%' }}
             bordered
             label="Päivä*"
             color="default"
-            type='date'
+            type="date"
             {...register('date')}
             initialValue={new Date().toISOString().substring(0, 10)}
             helperColor={'error'}
             helperText={errors.date?.message}
           />
         </Grid>
-        <Grid >
+        <Grid>
           <Input
             bordered
-            css={{w:'100%'}}
+            css={{ w: '100%' }}
             label="Syy*"
             color="default"
             {...register('reason')}
@@ -82,7 +81,7 @@ const RecordForm = ({sendForm}: Props): JSX.Element => {
         <Grid>
           <Textarea
             bordered
-            css={{w:'100%'}}
+            css={{ w: '100%' }}
             label="Lisätiedot"
             color="default"
             {...register('info')}
@@ -90,14 +89,14 @@ const RecordForm = ({sendForm}: Props): JSX.Element => {
             helperText={errors.info?.message}
           />
         </Grid>
-      
+
         <Grid>
-          <Button size={'md'} color="primary" rounded type="submit" css={{w:'100%'}}>
+          <Button size={'md'} color="primary" rounded type="submit" css={{ w: '100%' }}>
             Lähetä
           </Button>
         </Grid>
-        </form>
-      </Grid.Container>
+      </form>
+    </Grid.Container>
   )
 }
 
