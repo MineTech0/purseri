@@ -1,4 +1,5 @@
 import { Button, Col, Modal, Row, Text } from '@nextui-org/react'
+import { useRouter } from 'next/router'
 import React from 'react'
 import { Ship } from '../../../../../lib/db/entity/Ship'
 
@@ -14,6 +15,7 @@ interface Property {
 }
 
 const ShipModal = ({ visible, closeHandler, ship }: Props): JSX.Element | null => {
+  const router = useRouter()
   if (!ship) return null
 
   const properties: Property[] = [
@@ -62,6 +64,9 @@ const ShipModal = ({ visible, closeHandler, ship }: Props): JSX.Element | null =
       value: ship.area,
     },
   ]
+const crewButtonHandler = () => {
+  router.push(`/dashboard/ship/${ship.id}/crew`)
+}
 
   return (
     <Modal closeButton aria-labelledby="modal-title" open={visible} onClose={closeHandler}>
@@ -70,7 +75,7 @@ const ShipModal = ({ visible, closeHandler, ship }: Props): JSX.Element | null =
           {ship.name}
         </Text>
       </Modal.Header>
-      <Modal.Body css={{ overflowY: 'none' }}>
+      <Modal.Body css={{ overflowY: 'clip' }}>
         {properties.map((property, i) => (
           <Row key={i} gap={1}>
             <Col>
@@ -85,6 +90,9 @@ const ShipModal = ({ visible, closeHandler, ship }: Props): JSX.Element | null =
       <Modal.Footer>
         <Button auto flat color="error" onClick={closeHandler}>
           Sulje
+        </Button>
+        <Button auto flat color="primary" onClick={crewButtonHandler}>
+          Miehistö
         </Button>
       </Modal.Footer>
     </Modal>
