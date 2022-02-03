@@ -50,6 +50,6 @@ export class Ship {
     @OneToMany(() => CrewMember, member => member.ship)
     crew: CrewMember[];
 
-    @ManyToOne(() => UserEntity, user => user.ships)
+    @ManyToOne(() => UserEntity)
     user: UserEntity;
 }
