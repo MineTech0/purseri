@@ -19,13 +19,13 @@ const AddPage = ({ ship }: Props): JSX.Element => {
 
   const sendFormHandler = (data: RecordFormData) => {
     ShipService.addRecord(ship.id,data)
-      .then((data) => {
+      .then((_newData) => {
         setResult({
           type: 'success',
           message: 'Kiitos ilmoituksesta',
         })
       })
-      .catch((error: any) => {
+      .catch((error) => {
         setResult({
           type: 'error',
           message: error.toString(),
