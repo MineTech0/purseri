@@ -14,6 +14,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         ship = await shipRepo
         .createQueryBuilder("ship")
         .where({ user: session?.user.id, id: shipId } )
+        .leftJoinAndSelect("ship.crew", "crew")
         .getOneOrFail();
       } catch (error) {
           console.log(error)

@@ -1,28 +1,27 @@
-import {Column, Entity, ManyToOne, OneToMany, PrimaryColumn} from "typeorm";
-import { Record } from "./Record";
-import { Ship } from "./Ship";
+import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm'
+import { Record } from './Record'
+import { Ship } from './Ship'
 
 @Entity()
 export class CrewMember {
-    @PrimaryColumn('uuid')
-    id:string
+  @PrimaryGeneratedColumn('uuid')
+  id: string
 
-    @Column('varchar')
-    firstName : string
+  @Column('varchar')
+  firstName: string
 
-    @Column('varchar')
-    lastName : string
+  @Column('varchar')
+  lastName: string
 
-    @Column('varchar')
-    socialSecurityNumber: string
+  @Column('varchar')
+  socialSecurityNumber: string
 
-    @Column('varchar')
-    role: string
+  @Column('varchar')
+  role: string
 
-    @ManyToOne(() => Ship, ship => ship.crew)
-    ship: Ship;
+  @ManyToOne(() => Ship, (ship) => ship.crew)
+  ship: Ship
 
-    @OneToMany(() => Record, record => record.crewMember)
-    records: Record[];
-
+  @OneToMany(() => Record, (record) => record.crewMember)
+  records: Record[]
 }

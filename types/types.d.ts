@@ -26,3 +26,9 @@ export interface FormResult {
   type: 'success' | 'error'
   message: string
 }
+export interface CrewMemberFormData {
+  firstName: string
+  lastName: string
+  role: string
+  socialSecurityNumber: string
+}

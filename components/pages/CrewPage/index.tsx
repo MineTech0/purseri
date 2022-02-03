@@ -1,6 +1,9 @@
 import { Grid, Text, useModal } from '@nextui-org/react'
-import React from 'react'
+import React, { useState } from 'react'
+import { useResult } from '../../../hooks/useResult'
 import { Ship } from '../../../lib/db/entity/Ship'
+import ShipService from '../../../services/ShipService'
+import { CrewMemberFormData, FormResult } from '../../../types/types'
 import ShipInfo from '../../common/ShipInfo'
 import Layout from '../../Layout'
 import CrewActionBar from './CrewActionBar'
@@ -8,12 +11,30 @@ import CrewList from './CrewList'
 import NewMemberModal from './NewMemberModal'
 
 interface Props {
-  ship: Ship | null
+  ship: Ship
 }
 
 const CrewPage = ({ ship }: Props): JSX.Element => {
   const { setVisible, bindings } = useModal()
-  const crew = [{ firstName: 'Niilo', lastName: 'Kurki', role: 'Kansimies' }]
+  const [ResultBannerWrapper, setResult] = useResult()
+
+  const newCrewMember = (formData: CrewMemberFormData) => {
+    ShipService.addCrewMember(ship.id,formData)
+      .then((data) => {
+        ship.crew.push(data)
+        setResult({
+          type: 'success',
+          message: 'Miehistön jäsen lisätty',
+        })
+      })
+      .catch((error) => {
+        setResult({
+          type: 'error',
+          message: error.toString(),
+        })
+      })
+  }
+  
   return (
     <Layout>
       <Grid.Container gap={2} direction="column">
@@ -26,10 +47,13 @@ const CrewPage = ({ ship }: Props): JSX.Element => {
               <ShipInfo ship={ship} />
             </Grid>
             <Grid xs={12}>
-              <CrewActionBar crew={crew} openModal={() => setVisible(true)} />
+              <CrewActionBar crew={ship.crew} openModal={() => setVisible(true)} />
             </Grid>
             <Grid xs={12}>
-              <CrewList crew={crew} />
+              <ResultBannerWrapper/>
+            </Grid>
+            <Grid xs={12}>
+              <CrewList crew={ship.crew} />
             </Grid>
           </>
         ) : null}
@@ -37,7 +61,7 @@ const CrewPage = ({ ship }: Props): JSX.Element => {
       <NewMemberModal
         bindings={bindings}
         setVisible={setVisible}
-        sendHandler={() => console.log('send')}
+        sendHandler={newCrewMember}
       />
     </Layout>
   )
