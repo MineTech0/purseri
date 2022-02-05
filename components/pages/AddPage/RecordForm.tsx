@@ -11,7 +11,8 @@ interface Props {
 
 const schema = yup
   .object({
-    name: yup.string().required('Nimi vaaditaan'),
+    firstName: yup.string().required('Nimi vaaditaan'),
+    lastName: yup.string().required('Nimi vaaditaan'),
     reason: yup.string().required('Tehtävä vaaditaan'),
     date: yup.date().required('Päivä vaaditaan'),
     info: yup.string().default(''),
@@ -38,6 +39,7 @@ const RecordForm = ({ sendForm }: Props): JSX.Element => {
             label="Etunimi*"
             color="default"
             {...register('firstName')}
+            autoComplete='given-name'
             helperColor={'error'}
             helperText={errors.firstName?.message}
           />
@@ -49,6 +51,7 @@ const RecordForm = ({ sendForm }: Props): JSX.Element => {
             label="Sukunimi*"
             color="default"
             {...register('lastName')}
+            autoComplete='family-name"'
             helperColor={'error'}
             helperText={errors.lastName?.message}
           />

@@ -1,19 +1,21 @@
+import { CrewMember } from './../../../../lib/db/entity/CrewMember'
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { getManager, getRepository } from 'typeorm'
 import { validate, ValidationError } from 'class-validator'
 import { Record } from '../../../../lib/db/entity/Record'
 import { Ship } from '../../../../lib/db/entity/Ship'
 import { getConn } from '../../../../lib/db/connection'
-import { instanceToPlain } from 'class-transformer';
+import { instanceToPlain } from 'class-transformer'
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<Record | Record[] | ValidationError[] | {name:string, count: number}>
+  res: NextApiResponse<Record | Record[] | ValidationError[] | { name: string; count: number }>
 ) {
   const { shipId, name } = req.query
   const conn = await getConn()
   const recordRepo = conn.getRepository(Record)
   const shipRepo = conn.getRepository(Ship)
+  const memberRepo = conn.getRepository(CrewMember)
 
   switch (req.method) {
     case 'GET':
@@ -27,23 +29,20 @@ export default async function handler(
   async function getShipRecords() {
     if (name) {
       const records = await conn
-      .createQueryBuilder()
-      .select('record.name, COUNT(record.id)', 'count' )
-      .from(Record,'record')
-      .where('record.ship = :id', { id: shipId })
-      .groupBy('record.name')
-      .getRawMany()
-    return res.status(200).json(records)
-
-    }
-    else {
+        .createQueryBuilder()
+        .select('record.name, COUNT(record.id)', 'count')
+        .from(Record, 'record')
+        .where('record.ship = :id', { id: shipId })
+        .groupBy('record.name')
+        .getRawMany()
+      return res.status(200).json(records)
+    } else {
       const records = await recordRepo
-      .createQueryBuilder('record')
-      .where('record.ship = :id', { id: shipId })
-      .getMany()
-    return res.status(200).json(records)
+        .createQueryBuilder('record')
+        .where('record.ship = :id', { id: shipId })
+        .getMany()
+      return res.status(200).json(records)
     }
-    
   }
 
   async function createShipRecord() {
@@ -53,6 +52,13 @@ export default async function handler(
     if (errors.length > 0) {
       return res.status(400).json(errors)
     } else {
+      const member = await memberRepo.findOne({
+        firstName: record.firstName,
+        lastName: record.lastName,
+      })
+      if(member) {
+        record.crewMember = member
+      }
       const ship = await shipRepo.findOne(shipId as string)
       if (!ship) return res.status(400)
       record.ship = ship
