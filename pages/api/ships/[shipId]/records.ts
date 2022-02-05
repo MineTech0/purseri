@@ -1,6 +1,7 @@
+import { AllRecords } from './../../../../types/types.d'
 import { CrewMember } from './../../../../lib/db/entity/CrewMember'
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { getManager, getRepository } from 'typeorm'
+import { getManager, getRepository, IsNull, Not } from 'typeorm'
 import { validate, ValidationError } from 'class-validator'
 import { Record } from '../../../../lib/db/entity/Record'
 import { Ship } from '../../../../lib/db/entity/Ship'
@@ -9,9 +10,9 @@ import { instanceToPlain } from 'class-transformer'
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<Record | Record[] | ValidationError[] | { name: string; count: number }>
+  res: NextApiResponse<Record | Record[] | ValidationError[] | AllRecords>
 ) {
-  const { shipId, name } = req.query
+  const { shipId } = req.query
   const conn = await getConn()
   const recordRepo = conn.getRepository(Record)
   const shipRepo = conn.getRepository(Ship)
@@ -27,22 +28,24 @@ export default async function handler(
   }
 
   async function getShipRecords() {
-    if (name) {
-      const records = await conn
+      const memberRecords = await conn
         .createQueryBuilder()
-        .select('record.name, COUNT(record.id)', 'count')
+        .select([`record.firstName || ' ' || record.lastName as fullName`, `COUNT(record.id) as count`])
         .from(Record, 'record')
         .where('record.ship = :id', { id: shipId })
-        .groupBy('record.name')
+        .andWhere({ crewMember: Not(IsNull()) })
+        .groupBy('fullName')
         .getRawMany()
-      return res.status(200).json(records)
-    } else {
-      const records = await recordRepo
+      
+      const unnamedRecords = await recordRepo
         .createQueryBuilder('record')
         .where('record.ship = :id', { id: shipId })
+        .andWhere({ crewMember: IsNull() })
         .getMany()
-      return res.status(200).json(records)
-    }
+      return res.status(200).json({
+        memberRecords,
+        unnamedRecords
+      })
   }
 
   async function createShipRecord() {
@@ -56,7 +59,7 @@ export default async function handler(
         firstName: record.firstName,
         lastName: record.lastName,
       })
-      if(member) {
+      if (member) {
         record.crewMember = member
       }
       const ship = await shipRepo.findOne(shipId as string)

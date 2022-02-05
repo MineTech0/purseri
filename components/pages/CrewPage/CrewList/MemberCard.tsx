@@ -4,9 +4,10 @@ import { CrewMember } from '../../../../lib/db/entity/CrewMember'
 
 interface Props {
   crewMember: CrewMember
+  onEdit: (id:string) => void
 }
 
-const MemberCard = ({ crewMember }: Props): JSX.Element => {
+const MemberCard = ({ crewMember, onEdit }: Props): JSX.Element => {
   return (
     <Card>
       <Grid.Container justify='space-between' alignItems="center">
@@ -23,7 +24,7 @@ const MemberCard = ({ crewMember }: Props): JSX.Element => {
           </Grid.Container>
         </Grid>
         <Grid>
-            <Button auto color={'secondary'}>Muokkaa</Button>
+            <Button onClick={()=> onEdit(crewMember.id)} auto color={'secondary'}>Muokkaa</Button>
         </Grid>
       </Grid.Container>
     </Card>

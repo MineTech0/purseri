@@ -65,7 +65,7 @@ const RecordForm = ({ sendForm }: Props): JSX.Element => {
             color="default"
             type="date"
             {...register('date')}
-            initialValue={new Date().toISOString().substring(0, 10)}
+            value={new Date().toISOString().substring(0, 10)}
             helperColor={'error'}
             helperText={errors.date?.message}
           />

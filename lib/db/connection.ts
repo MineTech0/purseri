@@ -69,5 +69,5 @@ export async function getConn(
     return connection;
   }
 
-  return await connectionManager.create({ name, ...options[name] }).connect();
+  return connectionManager.create({ name, ...options[name] }).connect();
 }

@@ -1,4 +1,4 @@
-import { CrewMemberFormData, RecordFormData } from './../types/types.d';
+import { CrewMemberFormData, RecordFormData, AllRecords } from './../types/types.d';
 import { Ship } from "../lib/db/entity/Ship";
 import { ShipFormData } from "../types/types";
 import instance from "./instance";
@@ -24,7 +24,7 @@ class ShipService {
     }
 
     async getShipRecords(shipId: string) { 
-        return (await instance.get<Record[]>(`/ships/${shipId}/records`)).data;
+        return (await instance.get<AllRecords>(`/ships/${shipId}/records`)).data;
     }
 
     async getShipRecordByName(shipId: string) { 

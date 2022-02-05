@@ -18,7 +18,7 @@ interface ModalStateI {
 
 function DashboardPage({ ships }: { ships: Ship[] }): JSX.Element {
   const { data: session } = useSession();
-  const [ship, setShip] = useState<Ship | null>(ships[0]  || null);
+  const [ship, setShip] = useState<Ship | null>( null);
   const [modalStates, setModalStates] = useState<ModalStateI>({
     shipModal: {
       visible: false,
@@ -39,7 +39,6 @@ function DashboardPage({ ships }: { ships: Ship[] }): JSX.Element {
         visible,
       },
     };
-    console.log(newState);
     return setModalStates(newState);
   };
 

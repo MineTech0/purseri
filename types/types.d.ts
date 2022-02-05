@@ -1,3 +1,5 @@
+import { Record } from "../lib/db/entity/Record"
+
 export interface RecordFormData {
   firstName: string
   lastName: string
@@ -31,4 +33,14 @@ export interface CrewMemberFormData {
   lastName: string
   role: string
   socialSecurityNumber: string
+}
+
+export interface MemberRecord {
+  count: number;
+  fullname: string
+}
+
+export interface AllRecords {
+  memberRecords: MemberRecord[];
+  unnamedRecords: Record[]
 }

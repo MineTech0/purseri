@@ -1,7 +1,6 @@
 import { Grid, Text } from '@nextui-org/react'
 import React, { useState } from 'react'
 import { Ship } from '../../../lib/db/entity/Ship'
-import RecordService from '../../../services/RecordService'
 import { FormResult, RecordFormData } from '../../../types/types'
 import ShipInfo from '../../common/ShipInfo'
 import Layout from '../../Layout'
