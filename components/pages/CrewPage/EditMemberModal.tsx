@@ -1,4 +1,4 @@
-import { Button, Input, Modal, Spacer, Text } from '@nextui-org/react'
+import { Button, Col, Grid, Input, Modal, Row, Spacer, Text } from '@nextui-org/react'
 import React, { Dispatch, SetStateAction } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { CrewMemberFormData } from '../../../types/types'
@@ -92,8 +92,7 @@ const EditMemberModal = ({
             helperText={errors.role?.message}
           />
           <Spacer y={0} />
-          <Input
-            clearable
+          <Input.Password
             bordered
             fullWidth
             size="lg"
@@ -106,15 +105,28 @@ const EditMemberModal = ({
           <Spacer y={0} />
         </Modal.Body>
         <Modal.Footer>
-          <Button auto flat color="error" type="reset" onClick={onClose}>
-            Sulje
-          </Button>
-          <Button auto type="button" color="error">
-            Poista
-          </Button>
-          <Button auto type="submit">
-            Tallenna
-          </Button>
+          <Grid.Container justify="space-between">
+            <Grid>
+              <Button auto flat color="error" type="reset" onClick={onClose}>
+                Sulje
+              </Button>
+            </Grid>
+            <Grid>
+              <Grid.Container direction='row' justify='space-between'>
+                <Grid>
+                  <Button auto type="button" color="error">
+                    Poista
+                  </Button>
+                </Grid>
+                <Spacer x={0.3}/>
+                <Grid>
+                  <Button auto type="submit">
+                    Tallenna
+                  </Button>
+                </Grid>
+              </Grid.Container>
+            </Grid>
+          </Grid.Container>
         </Modal.Footer>
       </form>
     </Modal>
