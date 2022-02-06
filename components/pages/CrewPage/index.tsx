@@ -2,6 +2,7 @@ import { Grid, Text, useModal } from '@nextui-org/react'
 import React, { useState } from 'react'
 import { useResult } from '../../../hooks/useResult'
 import { Ship } from '../../../lib/db/entity/Ship'
+import ShipCrewMemberService from '../../../services/ShipCrewMemberService'
 import ShipService from '../../../services/ShipService'
 import { CrewMemberFormData, FormResult } from '../../../types/types'
 import ShipInfo from '../../common/ShipInfo'
@@ -19,7 +20,7 @@ const CrewPage = ({ ship }: Props): JSX.Element => {
   const [ResultBannerWrapper, setResult] = useResult()
 
   const newCrewMember = (formData: CrewMemberFormData) => {
-    ShipService.addCrewMember(ship.id,formData)
+    ShipCrewMemberService.addCrewMember(ship.id,formData)
       .then((data) => {
         ship.crew.push(data)
         setResult({
@@ -34,6 +35,11 @@ const CrewPage = ({ ship }: Props): JSX.Element => {
         })
       })
   }
+
+  const editCrewMember = (formData: CrewMemberFormData) => {
+    ShipService.
+  } 
+  
   
   return (
     <Layout>

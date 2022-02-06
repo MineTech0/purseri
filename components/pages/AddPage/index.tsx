@@ -6,7 +6,7 @@ import ShipInfo from '../../common/ShipInfo'
 import Layout from '../../Layout'
 import RecordForm from './RecordForm'
 import ResultPage from '../../common/ResultPage'
-import ShipService from '../../../services/ShipService'
+import ShipRecordService from '../../../services/ShipRecordService'
 
 interface Props {
   ship: Ship
@@ -17,7 +17,7 @@ const AddPage = ({ ship }: Props): JSX.Element => {
     useState<FormResult>()
 
   const sendFormHandler = (data: RecordFormData) => {
-    ShipService.addRecord(ship.id,data)
+    ShipRecordService.addRecord(ship.id,data)
       .then((_newData) => {
         setResult({
           type: 'success',

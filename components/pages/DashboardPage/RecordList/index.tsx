@@ -2,6 +2,7 @@ import { Card, Grid, Spacer, Text } from '@nextui-org/react'
 import React, { useEffect, useState } from 'react'
 import { Record } from '../../../../lib/db/entity/Record'
 import { Ship } from '../../../../lib/db/entity/Ship'
+import ShipRecordService from '../../../../services/ShipRecordService'
 import ShipService from '../../../../services/ShipService'
 import { AllRecords } from '../../../../types/types'
 import MemberRecordCard from './MemberRecordCard'
@@ -16,7 +17,7 @@ const RecordList = ({ ship }: Props): JSX.Element | null => {
   const [records, setRecords] = useState<AllRecords>()
 
   useEffect(() => {
-    ShipService.getShipRecords(ship.id).then((rec) => {
+    ShipRecordService.getShipRecords(ship.id).then((rec) => {
       setRecords(rec)
     })
   }, [ship])
