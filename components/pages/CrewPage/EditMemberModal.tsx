@@ -1,5 +1,5 @@
 import { Button, Col, Grid, Input, Modal, Row, Spacer, Text } from '@nextui-org/react'
-import React, { Dispatch, SetStateAction } from 'react'
+import React, { Dispatch, SetStateAction, useEffect } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { CrewMemberFormData } from '../../../types/types'
 import * as yup from 'yup'
@@ -33,10 +33,12 @@ const EditMemberModal = ({
     register,
     handleSubmit,
     reset,
+    setValue,
     formState: { errors },
   } = useForm<CrewMemberFormData>({
     resolver: yupResolver(schema),
   })
+
   const onSubmit: SubmitHandler<CrewMemberFormData> = (data, e) => {
     reset()
     setVisible(false)
@@ -46,7 +48,16 @@ const EditMemberModal = ({
     reset()
     setVisible(false)
   }
+
+  useEffect(() => {
+    setValue('firstName', crewMember?.firstName)
+    setValue('lastName', crewMember?.lastName)
+    setValue('role', crewMember?.role)
+    setValue('socialSecurityNumber', crewMember?.socialSecurityNumber)
+  }, [crewMember])
+  
   if (!crewMember) return null
+
   return (
     <Modal closeButton aria-labelledby="modal-title" {...bindings}>
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -63,7 +74,6 @@ const EditMemberModal = ({
             size="lg"
             label="Etunimi"
             {...register('firstName')}
-            value={crewMember.firstName}
             helperColor={'error'}
             helperText={errors.firstName?.message}
           />
@@ -75,7 +85,6 @@ const EditMemberModal = ({
             size="lg"
             label="Sukunimi"
             {...register('lastName')}
-            value={crewMember.lastName}
             helperColor={'error'}
             helperText={errors.lastName?.message}
           />
@@ -87,7 +96,6 @@ const EditMemberModal = ({
             size="lg"
             label="Toimi"
             {...register('role')}
-            value={crewMember.role}
             helperColor={'error'}
             helperText={errors.role?.message}
           />
@@ -98,7 +106,6 @@ const EditMemberModal = ({
             size="lg"
             label="Henkilötunnus"
             {...register('socialSecurityNumber')}
-            value={crewMember.socialSecurityNumber}
             helperColor={'error'}
             helperText={errors.socialSecurityNumber?.message}
           />
@@ -112,13 +119,13 @@ const EditMemberModal = ({
               </Button>
             </Grid>
             <Grid>
-              <Grid.Container direction='row' justify='space-between'>
+              <Grid.Container direction="row" justify="space-between">
                 <Grid>
                   <Button auto type="button" color="error">
                     Poista
                   </Button>
                 </Grid>
-                <Spacer x={0.3}/>
+                <Spacer x={0.3} />
                 <Grid>
                   <Button auto type="submit">
                     Tallenna

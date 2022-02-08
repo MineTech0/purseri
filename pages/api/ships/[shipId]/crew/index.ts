@@ -1,9 +1,9 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { getManager } from 'typeorm'
 import { validate, ValidationError } from 'class-validator'
-import { Ship } from '../../../../lib/db/entity/Ship'
-import { getConn } from '../../../../lib/db/connection'
-import { CrewMember } from '../../../../lib/db/entity/CrewMember'
+import { Ship } from '../../../../../lib/db/entity/Ship'
+import { getConn } from '../../../../../lib/db/connection'
+import { CrewMember } from '../../../../../lib/db/entity/CrewMember'
 
 export default async function handler(
   req: NextApiRequest,
