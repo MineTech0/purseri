@@ -22,6 +22,15 @@ const schema = yup
     name: yup.string().required('Nimi vaaditaan'),
     owner: yup.string().required('Omistaja vaaditaan'),
     shipmaster: yup.string().required('Laivanisäntä vaaditaan'),
+    idLetters: yup.string().required('Tunnuskirjaimet vaaditaan'),
+    imo: yup.string().required('Imo-nro vaaditaan'),
+    gt: yup.number().typeError('Pitää olla numero'),
+    power: yup.number().typeError('Pitää olla numero'),
+    length: yup.number().typeError('Pitää olla numero'),
+    nationality: yup.string().required('Vaaditaan'),
+    home: yup.string().required('Vaaditaan'),
+    address: yup.string().required('Vaaditaan'),
+    area: yup.number().typeError('Pitää olla numero'),
   })
   .required()
 
@@ -48,6 +57,7 @@ const NewShipForm = ({ sendForm }: Props): JSX.Element => {
             label="Nimi*"
             color="default"
             width="100%"
+            placeholder='esim m/s ...'
             {...register('name')}
             helperColor={'error'}
             helperText={errors.name?.message}
@@ -77,12 +87,131 @@ const NewShipForm = ({ sendForm }: Props): JSX.Element => {
             helperText={errors.shipmaster?.message}
           />
         </Row>
+        <Spacer y={1} />
+        <Row>
+          <Input
+            bordered
+            label="Tunnuskirjaimet*"
+            width="100%"
+            color="default"
+            {...register('idLetters')}
+            helperColor={'error'}
+            helperText={errors.idLetters?.message}
+          />
+        </Row>
+        <Spacer y={1} />
+        <Row>
+          <Input
+            bordered
+            label="IMO-nro*"
+            width="100%"
+            color="default"
+            {...register('imo')}
+            helperColor={'error'}
+            helperText={errors.imo?.message}
+          />
+        </Row>
+        <Spacer y={1} />
+        <Row>
+          <Input
+            bordered
+            label="Bruttovetoisuus*"
+            width="100%"
+            color="default"
+            type={'number'}
+            min={0}
+            {...register('gt')}
+            helperColor={'error'}
+            helperText={errors.gt?.message}
+          />
+        </Row>
+        <Spacer y={1} />
+        <Row>
+          <Input
+            bordered
+            label="Teho*"
+            width="100%"
+            color="default"
+            type={'number'}
+            min={0}
+            labelRight='kW'
+            {...register('power')}
+            helperColor={'error'}
+            helperText={errors.power?.message}
+          />
+        </Row>
+        <Spacer y={1} />
+        <Row>
+          <Input
+            bordered
+            label="Pituus*"
+            width="100%"
+            type={'number'}
+            min={0}
+            step="0.01"
+            labelRight='metriä'
+            color="default"
+            {...register('length')}
+            helperColor={'error'}
+            helperText={errors.length?.message}
+          />
+        </Row>
+        <Spacer y={1} />
+        <Row>
+          <Input
+            bordered
+            label="Kansallisuus*"
+            width="100%"
+            color="default"
+            {...register('nationality')}
+            helperColor={'error'}
+            helperText={errors.nationality?.message}
+          />
+        </Row>
+        <Spacer y={1} />
+        <Row>
+          <Input
+            bordered
+            label="Kotipaikka*"
+            width="100%"
+            color="default"
+            {...register('home')}
+            helperColor={'error'}
+            helperText={errors.home?.message}
+          />
+        </Row>
+        <Spacer y={1} />
+        <Row>
+          <Input
+            bordered
+            label="Osoite*"
+            width="100%"
+            color="default"
+            {...register('address')}
+            helperColor={'error'}
+            helperText={errors.address?.message}
+          />
+        </Row>
+        <Spacer y={1} />
+        <Row>
+          <Input
+            bordered
+            label="Liikennealue*"
+            width="100%"
+            type={'number'}
+            color="default"
+            {...register('area')}
+            helperColor={'error'}
+            helperText={errors.area?.message}
+          />
+        </Row>
         <Spacer y={3} />
         <Row>
           <Button size={'md'} color="primary" rounded type="submit" css={{w:'100%'}}>
             Lisää
           </Button>
         </Row>
+        <Spacer y={3} />
       </form>
     </Container>
   )

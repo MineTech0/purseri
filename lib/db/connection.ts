@@ -8,19 +8,19 @@ export const connectionOptions: ConnectionOptions = {
   username: process.env.TYPEORM_USERNAME,
   password: process.env.TYPEORM_PASSWORD,
   database: process.env.TYPEORM_DATABASE,
-  logging: process.env.NODE_ENV === "development",
+  logging: ["query", "error"]
 };
 
 export const options: Record<string, ConnectionOptions> = {
   default: {
     ...connectionOptions,
-    synchronize: process.env.NODE_ENV !== "production",
+    synchronize: true,
     entities: allEntities,
   },
 };
 
 function entitiesChanged(prevEntities: any[], newEntities: any[]): boolean {
-  if (prevEntities.length !== newEntities.length) return true;
+  //if (prevEntities.length !== newEntities.length) return true;
 
   for (let i = 0; i < prevEntities.length; i++) {
     if (prevEntities[i] !== newEntities[i]) return true;
@@ -69,5 +69,5 @@ export async function getConn(
     return connection;
   }
 
-  return await connectionManager.create({ name, ...options[name] }).connect();
+  return connectionManager.create({ name, ...options[name] }).connect();
 }

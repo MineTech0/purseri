@@ -1,3 +1,4 @@
+import { CrewMember } from './entity/CrewMember';
 import { AccountEntity, SessionEntity, UserEntity, VerificationTokenEntity } from './entity/entities';
 import { Record } from "./entity/Record"
 import { Ship } from "./entity/Ship"
@@ -8,6 +9,7 @@ const allEntities = [
     UserEntity,
     SessionEntity,
     VerificationTokenEntity,
-    AccountEntity
+    AccountEntity,
+    CrewMember
 ]
 export default allEntities

@@ -3,18 +3,18 @@ import React from 'react'
 import { Record } from '../../../../lib/db/entity/Record'
 
 interface Props {
-    record: Record
+  record: Record
 }
 
-const RecordCard = ({record}: Props): JSX.Element => {
+const UnnamedRecordCard = ({ record }: Props): JSX.Element => {
   return (
-    <Card >
-      <Grid.Container justify="space-between" alignItems='center'>
-        <Grid onClick={()=> console.log('Card clicked')}>
-          <Grid.Container direction='column'>
+    <Card>
+      <Grid.Container justify="space-between" alignItems="center">
+        <Grid onClick={() => console.log('Card clicked')}>
+          <Grid.Container direction="column">
             <Grid>
               <Text b size={17}>
-                {record.name}
+                {record.firstName} {record.lastName}
               </Text>
             </Grid>
             <Grid>
@@ -26,7 +26,7 @@ const RecordCard = ({record}: Props): JSX.Element => {
           </Grid.Container>
         </Grid>
         <Grid>
-          <Button color="success" auto onClick={()=> console.log('Button clicked') }> 
+          <Button color="success" auto onClick={() => console.log('Button clicked')}>
             Hyväksy
           </Button>
         </Grid>
@@ -35,4 +35,4 @@ const RecordCard = ({record}: Props): JSX.Element => {
   )
 }
 
-export default RecordCard
+export default UnnamedRecordCard

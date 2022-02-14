@@ -1,26 +1,54 @@
-import { Grid } from '@nextui-org/react'
-import React, { useState } from 'react'
-import Layout from '../../Layout'
-import RecordList from './RecordList'
-import ShipInfo from '../../common/ShipInfo'
-import ShipSelector from './ShipSelector'
-import { useSession } from 'next-auth/react'
-import { Ship } from '../../../lib/db/entity/Ship'
-import Link from 'next/link'
+import { Grid, useModal } from "@nextui-org/react";
+import React, { useState } from "react";
+import { useSession } from "next-auth/react";
+import Link from "next/link";
+import Layout from "../../Layout";
+import RecordList from "./RecordList";
+import ShipInfo from "../../common/ShipInfo";
+import ShipSelector from "./ShipSelector";
+import { Ship } from "../../../lib/db/entity/Ship";
+import ShipModal from "./Modals/ShipModal";
 
-const DashboardPage = ({ ships }: { ships: Ship[] }): JSX.Element => {
-  const { data: session } = useSession()
-  const [ship, setShip] = useState<Ship | null>(null)
+interface ModalStateI {
+  [key: string]: {
+    visible: boolean;
+    closeHandler: () => void;
+  };
+}
+
+function DashboardPage({ ships }: { ships: Ship[] }): JSX.Element {
+  const { data: session } = useSession();
+  const [ship, setShip] = useState<Ship | null>( null);
+  const [modalStates, setModalStates] = useState<ModalStateI>({
+    shipModal: {
+      visible: false,
+      closeHandler: () => handleModal("shipModal", false),
+    },
+  });
 
   const selectShipHandler = (id: string) => {
-    const ship = ships.find((ship) => ship.id === id)
-    setShip(ship || null)
-  }
+    const selectedShip = ships.find((s) => s.id === id);
+    setShip(selectedShip || null);
+  };
+
+  const handleModal = (modalName: string, visible: boolean) => {
+    const newState = {
+      ...modalStates,
+      [modalName]: {
+        ...modalStates[modalName],
+        visible,
+      },
+    };
+    return setModalStates(newState);
+  };
+
   return (
     <Layout>
       <p>
-        Signed in as {session?.user.name || null}{' '}
-        <Link href="/api/auth/signout"><a >Sign out</a></Link>
+        Signed in as {session?.user.name || null}{" "}
+        <Link href="/api/auth/signout">
+          Sign out
+        </Link>
       </p>
       <Grid.Container gap={2} direction="column">
         <Grid xs={12}>
@@ -29,7 +57,11 @@ const DashboardPage = ({ ships }: { ships: Ship[] }): JSX.Element => {
         {ship ? (
           <>
             <Grid xs={12}>
-              <ShipInfo ship={ship} />
+              <ShipInfo
+                ship={ship}
+                clickable
+                onClick={() => handleModal("shipModal", true)}
+              />
             </Grid>
             <Grid xs={12}>
               <RecordList ship={ship} />
@@ -37,8 +69,9 @@ const DashboardPage = ({ ships }: { ships: Ship[] }): JSX.Element => {
           </>
         ) : null}
       </Grid.Container>
+      <ShipModal {...modalStates.shipModal} ship={ship} />
     </Layout>
-  )
+  );
 }
 
-export default DashboardPage
+export default DashboardPage;

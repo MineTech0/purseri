@@ -1,13 +1,12 @@
 import { Grid, Text } from '@nextui-org/react'
 import React, { useState } from 'react'
 import { Ship } from '../../../lib/db/entity/Ship'
-import RecordService from '../../../services/RecordService'
 import { FormResult, RecordFormData } from '../../../types/types'
 import ShipInfo from '../../common/ShipInfo'
 import Layout from '../../Layout'
 import RecordForm from './RecordForm'
 import ResultPage from '../../common/ResultPage'
-import ShipService from '../../../services/ShipService'
+import ShipRecordService from '../../../services/ShipRecordService'
 
 interface Props {
   ship: Ship
@@ -18,14 +17,14 @@ const AddPage = ({ ship }: Props): JSX.Element => {
     useState<FormResult>()
 
   const sendFormHandler = (data: RecordFormData) => {
-    ShipService.addRecord(ship.id,data)
-      .then((data) => {
+    ShipRecordService.addRecord(ship.id,data)
+      .then((_newData) => {
         setResult({
           type: 'success',
           message: 'Kiitos ilmoituksesta',
         })
       })
-      .catch((error: any) => {
+      .catch((error) => {
         setResult({
           type: 'error',
           message: error.toString(),

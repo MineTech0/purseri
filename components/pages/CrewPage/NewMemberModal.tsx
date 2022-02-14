@@ -1,0 +1,112 @@
+import { Button, Input, Modal, Spacer, Text } from '@nextui-org/react'
+import React, { Dispatch, SetStateAction } from 'react'
+import { SubmitHandler, useForm } from 'react-hook-form'
+import { CrewMemberFormData } from '../../../types/types'
+import * as yup from 'yup'
+import { yupResolver } from '@hookform/resolvers/yup'
+
+interface Props {
+  bindings: {
+    open: boolean
+    onClose: () => void
+  }
+  setVisible: Dispatch<SetStateAction<boolean>>
+  sendHandler: (formData: CrewMemberFormData) => void
+}
+const schema = yup
+  .object({
+    firstName: yup.string().required('Nimi vaaditaan'),
+    lastName: yup.string().required('Nimi vaaditaan'),
+    role: yup.string().required('Toimi vaaditaan'),
+    socialSecurityNumber: yup.string().required('Henkilötunnus vaaditaan'),
+
+  })
+  .required()
+
+const NewMemberModal = ({ bindings, setVisible, sendHandler }: Props): JSX.Element => {
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm<CrewMemberFormData>({
+    resolver: yupResolver(schema),
+  })
+  const onSubmit: SubmitHandler<CrewMemberFormData> = (data, e) =>{
+    e?.target.reset()
+    setVisible(false)
+    sendHandler(data)
+  } 
+  const onClose = () => {
+    reset()
+    setVisible(false)
+  }
+  
+  return (
+    <Modal closeButton aria-labelledby="modal-title" {...bindings}>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <Modal.Header>
+          <Text id="modal-title" h2 size={22}>
+            Lisää miehistön jäsen
+          </Text>
+        </Modal.Header>
+        <Modal.Body>
+          <Input
+            clearable
+            bordered
+            fullWidth
+            size="lg"
+            label="Etunimi"
+            {...register('firstName')}
+            helperColor={'error'}
+            helperText={errors.firstName?.message}
+          />
+           <Spacer y={0}/>
+          <Input
+            clearable
+            bordered
+            fullWidth
+            size="lg"
+            label="Sukunimi"
+            {...register('lastName')}
+            helperColor={'error'}
+            helperText={errors.lastName?.message}
+          />
+           <Spacer y={0}/>
+          <Input
+            clearable
+            bordered
+            fullWidth
+            size="lg"
+            label="Toimi"
+            {...register('role')}
+            helperColor={'error'}
+            helperText={errors.role?.message}
+          />
+           <Spacer y={0}/>
+          <Input
+            clearable
+            bordered
+            fullWidth
+            size="lg"
+            label="Henkilötunnus"
+            {...register('socialSecurityNumber')}
+            helperColor={'error'}
+            helperText={errors.socialSecurityNumber?.message}
+          />
+           <Spacer y={0}/>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button auto flat color="error" type='reset' onClick={onClose}>
+            Sulje
+          </Button>
+          <Button auto type="submit">
+            Lisää
+          </Button>
+        </Modal.Footer>
+      </form>
+    </Modal>
+  )
+}
+
+export default NewMemberModal

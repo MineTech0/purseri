@@ -1,4 +1,4 @@
-import { Button, Grid, Input, Text, Textarea } from '@nextui-org/react'
+import { Button, Col, Grid, Input, Row, Text, Textarea } from '@nextui-org/react'
 import React from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
@@ -11,14 +11,15 @@ interface Props {
 
 const schema = yup
   .object({
-    name: yup.string().required('Nimi vaaditaan'),
+    firstName: yup.string().required('Nimi vaaditaan'),
+    lastName: yup.string().required('Nimi vaaditaan'),
     reason: yup.string().required('Tehtävä vaaditaan'),
     date: yup.date().required('Päivä vaaditaan'),
-    info: yup.string().default('')
+    info: yup.string().default(''),
   })
   .required()
 
-const RecordForm = ({sendForm}: Props): JSX.Element => {
+const RecordForm = ({ sendForm }: Props): JSX.Element => {
   const {
     register,
     handleSubmit,
@@ -29,36 +30,50 @@ const RecordForm = ({sendForm}: Props): JSX.Element => {
   })
   const onSubmit: SubmitHandler<RecordFormData> = (data) => sendForm(data)
   return (
-      <Grid.Container gap={2} direction='column' wrap='wrap' >
-        <form onSubmit={handleSubmit(onSubmit)}>
-        <Grid >
+    <Grid.Container gap={2} direction="column">
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <Grid>
           <Input
             bordered
-            css={{w:'100%'}}
-            label="Nimi*"
+            css={{ w: '100%' }}
+            label="Etunimi*"
             color="default"
-            {...register('name')}
+            {...register('firstName')}
+            autoComplete='given-name'
             helperColor={'error'}
-            helperText={errors.name?.message}
+            helperText={errors.firstName?.message}
           />
         </Grid>
-        <Grid >
+        <Grid>
           <Input
-          css={{w:'100%'}}
+            bordered
+            css={{ w: '100%' }}
+            label="Sukunimi*"
+            color="default"
+            {...register('lastName')}
+            autoComplete='family-name"'
+            helperColor={'error'}
+            helperText={errors.lastName?.message}
+          />
+        </Grid>
+
+        <Grid>
+          <Input
+            css={{ w: '100%' }}
             bordered
             label="Päivä*"
             color="default"
-            type='date'
+            type="date"
             {...register('date')}
-            initialValue={new Date().toISOString().substring(0, 10)}
+            value={new Date().toISOString().substring(0, 10)}
             helperColor={'error'}
             helperText={errors.date?.message}
           />
         </Grid>
-        <Grid >
+        <Grid>
           <Input
             bordered
-            css={{w:'100%'}}
+            css={{ w: '100%' }}
             label="Syy*"
             color="default"
             {...register('reason')}
@@ -69,7 +84,7 @@ const RecordForm = ({sendForm}: Props): JSX.Element => {
         <Grid>
           <Textarea
             bordered
-            css={{w:'100%'}}
+            css={{ w: '100%' }}
             label="Lisätiedot"
             color="default"
             {...register('info')}
@@ -77,14 +92,14 @@ const RecordForm = ({sendForm}: Props): JSX.Element => {
             helperText={errors.info?.message}
           />
         </Grid>
-      
+
         <Grid>
-          <Button size={'md'} color="primary" rounded type="submit" css={{w:'100%'}}>
+          <Button size={'md'} color="primary" rounded type="submit" css={{ w: '100%' }}>
             Lähetä
           </Button>
         </Grid>
-        </form>
-      </Grid.Container>
+      </form>
+    </Grid.Container>
   )
 }
 
