@@ -37,12 +37,29 @@ const CrewPage = ({ ship }: Props): JSX.Element => {
   }
 
   const editCrewMember = (memberId: string, formData: CrewMemberFormData) => {
-    ShipCrewMemberService.editCrewMember(ship.id,memberId, formData)
+    ShipCrewMemberService.editCrewMember(ship.id, memberId, formData)
       .then((data) => {
-        ship.crew = ship.crew.map(member => member.id === data.id ? data : member)
+        ship.crew = ship.crew.map((member) => (member.id === data.id ? data : member))
         setResult({
           type: 'success',
           message: 'Muokkaus onnistui',
+        })
+      })
+      .catch((error) => {
+        setResult({
+          type: 'error',
+          message: error.toString(),
+        })
+      })
+  }
+
+  const deleteCrewMember = (memberId: string) => {
+    ShipCrewMemberService.deleteCrewMember(ship.id, memberId)
+      .then((data) => {
+        ship.crew = ship.crew.filter((member) => member.id !== memberId)
+        setResult({
+          type: 'success',
+          message: 'Poisto onnistui',
         })
       })
       .catch((error) => {
@@ -71,7 +88,11 @@ const CrewPage = ({ ship }: Props): JSX.Element => {
               <ResultBannerWrapper />
             </Grid>
             <Grid xs={12}>
-              <CrewList crew={ship.crew} editCrewMember={editCrewMember} />
+              <CrewList
+                crew={ship.crew}
+                editCrewMember={editCrewMember}
+                deleteCrewMember={deleteCrewMember}
+              />
             </Grid>
           </>
         ) : null}

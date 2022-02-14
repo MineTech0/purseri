@@ -11,6 +11,10 @@ class ShipCrewMemberService {
     async editCrewMember(shipId:string, memberId:string, formData: CrewMemberFormData){
         return (await instance.put<CrewMember>(`/ships/${shipId}/crew/${memberId}`, formData)).data;
     }
+
+    async deleteCrewMember(shipId:string, memberId:string){
+        return (await instance.delete<boolean>(`/ships/${shipId}/crew/${memberId}`)).data;
+    }
 }
 
 export default new ShipCrewMemberService

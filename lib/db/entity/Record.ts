@@ -1,5 +1,5 @@
 
-import {Column, Entity, ManyToOne, PrimaryGeneratedColumn} from "typeorm";
+import {Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn} from "typeorm";
 import { CrewMember } from "./CrewMember";
 import { Ship } from "./Ship";
 
@@ -27,6 +27,8 @@ export class Record {
     @ManyToOne(() => Ship, ship => ship.records)
     ship: Ship;
 
-    @ManyToOne(() => CrewMember, member => member.records)
+    @ManyToOne(() => CrewMember, member => member.records, {
+        createForeignKeyConstraints: false
+    })
     crewMember: CrewMember;
 }

@@ -13,6 +13,7 @@ interface Props {
   setVisible: Dispatch<SetStateAction<boolean>>
   sendHandler: (formData: CrewMemberFormData) => void
   crewMember: CrewMemberFormData | undefined
+  deleteHandler: () => void
 }
 const schema = yup
   .object({
@@ -28,6 +29,7 @@ const EditMemberModal = ({
   bindings,
   setVisible,
   sendHandler,
+  deleteHandler
 }: Props): JSX.Element | null => {
   const {
     register,
@@ -48,12 +50,20 @@ const EditMemberModal = ({
     reset()
     setVisible(false)
   }
-
+  const onDelete = () => {
+    deleteHandler()
+    setVisible(false)
+  }
+  
+  
+  
   useEffect(() => {
+    if(crewMember){
     setValue('firstName', crewMember?.firstName)
     setValue('lastName', crewMember?.lastName)
     setValue('role', crewMember?.role)
     setValue('socialSecurityNumber', crewMember?.socialSecurityNumber)
+    }
   }, [crewMember])
   
   if (!crewMember) return null
@@ -121,7 +131,7 @@ const EditMemberModal = ({
             <Grid>
               <Grid.Container direction="row" justify="space-between">
                 <Grid>
-                  <Button auto type="button" color="error">
+                  <Button auto type="button" color="error" onClick={onDelete}>
                     Poista
                   </Button>
                 </Grid>

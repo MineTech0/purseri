@@ -1,4 +1,4 @@
-import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm'
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm'
 import { Record } from './Record'
 import { Ship } from './Ship'
 
@@ -22,6 +22,8 @@ export class CrewMember {
   @ManyToOne(() => Ship, (ship) => ship.crew)
   ship: Ship
 
-  @OneToMany(() => Record, (record) => record.crewMember)
+  @OneToMany(() => Record, (record) => record.crewMember, {
+    cascade: ['update','remove'],
+  })
   records: Record[]
 }

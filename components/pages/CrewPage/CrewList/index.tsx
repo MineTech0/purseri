@@ -8,9 +8,10 @@ import { CrewMemberFormData } from '../../../../types/types'
 interface Props {
   crew: CrewMember[]
   editCrewMember: (id: string, formData: CrewMemberFormData) => void
+  deleteCrewMember: (id:string) => void
 }
 
-const CrewList = ({ crew, editCrewMember }: Props): JSX.Element => {
+const CrewList = ({ crew, editCrewMember, deleteCrewMember }: Props): JSX.Element => {
   const { setVisible, bindings } = useModal()
   const [editMember, setEditMember] = useState<CrewMember>()
   const onEdit = (id: string) => {
@@ -31,6 +32,7 @@ const CrewList = ({ crew, editCrewMember }: Props): JSX.Element => {
           setVisible={setVisible}
           crewMember={editMember}
           sendHandler={(data) => editCrewMember(editMember.id, data)}
+          deleteHandler={() => deleteCrewMember(editMember.id)}
         />
       ) : null}
     </Grid.Container>
