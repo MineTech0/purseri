@@ -8,6 +8,7 @@ import ShipInfo from "../../common/ShipInfo";
 import ShipSelector from "./ShipSelector";
 import { Ship } from "../../../lib/db/entity/Ship";
 import ShipModal from "./Modals/ShipModal";
+import MemberModal from "./Modals/MemberModal";
 
 interface ModalStateI {
   [key: string]: {
@@ -24,6 +25,10 @@ function DashboardPage({ ships }: { ships: Ship[] }): JSX.Element {
       visible: false,
       closeHandler: () => handleModal("shipModal", false),
     },
+    memberModal: {
+      visible: false,
+      closeHandler: () => handleModal("memberModal", false),
+    },
   });
 
   const selectShipHandler = (id: string) => {
@@ -39,7 +44,7 @@ function DashboardPage({ ships }: { ships: Ship[] }): JSX.Element {
         visible,
       },
     };
-    return setModalStates(newState);
+     setModalStates(newState);
   };
 
   return (
@@ -70,6 +75,7 @@ function DashboardPage({ ships }: { ships: Ship[] }): JSX.Element {
         ) : null}
       </Grid.Container>
       <ShipModal {...modalStates.shipModal} ship={ship} />
+      {/* <MemberModal {...modalStates.memberModal} crewMember={member}/> */}
     </Layout>
   );
 }
