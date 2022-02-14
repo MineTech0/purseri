@@ -20,7 +20,7 @@ export const options: Record<string, ConnectionOptions> = {
 };
 
 function entitiesChanged(prevEntities: any[], newEntities: any[]): boolean {
-  if (prevEntities.length !== newEntities.length) return true;
+  //if (prevEntities.length !== newEntities.length) return true;
 
   for (let i = 0; i < prevEntities.length; i++) {
     if (prevEntities[i] !== newEntities[i]) return true;
