@@ -1,5 +1,5 @@
-import { Grid, useModal } from "@nextui-org/react";
-import React, { useState } from "react";
+import { Grid } from "@nextui-org/react";
+import { useState } from "react";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import Layout from "../../Layout";
@@ -8,7 +8,6 @@ import ShipInfo from "../../common/ShipInfo";
 import ShipSelector from "./ShipSelector";
 import { Ship } from "../../../lib/db/entity/Ship";
 import ShipModal from "./Modals/ShipModal";
-import MemberModal from "./Modals/MemberModal";
 
 interface ModalStateI {
   [key: string]: {

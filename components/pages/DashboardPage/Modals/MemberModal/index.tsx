@@ -1,5 +1,4 @@
-import { Button, Col, Modal, Row, Text } from '@nextui-org/react'
-import React from 'react'
+import { Button, Modal, Text } from '@nextui-org/react';
 import { CrewMember } from '../../../../../lib/db/entity/CrewMember'
 
 interface Props {

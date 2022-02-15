@@ -36,6 +36,7 @@ const RecordList = ({ ship }: Props): JSX.Element | null => {
           <MemberRecordCard crewMember={member} memberClick={() => console.log(member)} />
         </Grid>
       ))}
+      
       <Spacer y={3}/>
       <Grid>
         <Grid.Container justify="space-between">

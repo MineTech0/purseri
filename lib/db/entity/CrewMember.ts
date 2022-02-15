@@ -1,6 +1,6 @@
-import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm'
-import { Record } from './Record'
-import { Ship } from './Ship'
+import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Record } from './Record';
+import { Ship } from './Ship';
 
 @Entity()
 export class CrewMember {
