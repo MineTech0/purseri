@@ -74,7 +74,6 @@ function DashboardPage({ ships }: { ships: Ship[] }): JSX.Element {
         ) : null}
       </Grid.Container>
       <ShipModal {...modalStates.shipModal} ship={ship} />
-      {/* <MemberModal {...modalStates.memberModal} crewMember={member}/> */}
     </Layout>
   );
 }
