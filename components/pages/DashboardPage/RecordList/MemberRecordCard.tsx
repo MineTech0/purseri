@@ -10,9 +10,9 @@ interface Props {
 
 const MemberRecordCard = ({ crewMember, memberClick }: Props): JSX.Element => {
   return (
-    <Card>
+    <Card clickable onClick={memberClick}>
       <Grid.Container justify="space-between" alignItems="center">
-        <Grid onClick={memberClick}>
+        <Grid>
           <Grid.Container direction="column">
             <Grid>
               <Text b size={17}>

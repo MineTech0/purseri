@@ -1,6 +1,7 @@
 import { Button, Card, Grid, Text } from '@nextui-org/react'
 import React from 'react'
 import { Record } from '../../../../lib/db/entity/Record'
+import { convertDate } from '../../../../lib/utils'
 
 interface Props {
   record: Record
@@ -18,7 +19,7 @@ const UnnamedRecordCard = ({ record }: Props): JSX.Element => {
               </Text>
             </Grid>
             <Grid>
-              <Text b>{new Date(record.date).toLocaleDateString('fi-FI')}</Text>
+              <Text b>{convertDate(record.date)}</Text>
             </Grid>
             <Grid>
               <Text>{record.reason}</Text>

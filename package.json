@@ -9,6 +9,7 @@
     "typeorm": "node --require ts-node/register ./node_modules/typeorm/cli.js"
   },
   "dependencies": {
+    "@geist-ui/core": "^2.3.3",
     "@hookform/resolvers": "^2.8.8",
     "@next-auth/typeorm-legacy-adapter": "^1.0.1",
     "@nextui-org/react": "^1.0.2-beta.1",

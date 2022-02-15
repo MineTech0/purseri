@@ -1,32 +1,47 @@
-import { Button, Modal, Text } from '@nextui-org/react';
+import { Button, Collapse, Container, Modal, Row, Text } from '@nextui-org/react'
 import { CrewMember } from '../../../../../lib/db/entity/CrewMember'
+import { convertDate } from '../../../../../lib/utils'
 
 interface Props {
-  visible: boolean
-  closeHandler: () => void
+  bindings: {
+    open: boolean
+    onClose: () => void
+  }
   crewMember: CrewMember | null
 }
 
-const MemberModal = ({ visible, closeHandler, crewMember }: Props): JSX.Element | null => {
+const MemberModal = ({ bindings, crewMember }: Props): JSX.Element | null => {
   if (!crewMember) return null
 
   return (
-    <Modal closeButton aria-labelledby="modal-title" open={visible} onClose={closeHandler}>
+    <Modal closeButton aria-labelledby="modal-title" {...bindings}>
       <Modal.Header>
-        <Text h2 id="modal-title" size={23}>
-          {crewMember.firstName} {crewMember.lastName}
-        </Text>
-        <Text b size={18}>
-          {crewMember.role}
-        </Text>
+        <Container>
+          <Row>
+            <Text h2 id="modal-title" size={32}>
+              {crewMember.firstName} {crewMember.lastName}
+            </Text>
+          </Row>
+          <Row>
+            <Text size={18}>{crewMember.role}</Text>
+          </Row>
+        </Container>
       </Modal.Header>
       <Modal.Body css={{ overflowY: 'clip' }}>
+        <Collapse.Group splitted>
+          {crewMember.records.map((record) => (
+            <Collapse
+              key={record.id}
+              subtitle={record.reason}
+              title={convertDate(record.date)}
+              
+            >
+                {record.info !== '' ? <Text>{record.info}</Text> : <Text span>Ei infoa</Text> }
+              
+            </Collapse>
+          ))}
+        </Collapse.Group>
       </Modal.Body>
-      <Modal.Footer>
-        <Button auto flat color="error" onClick={closeHandler}>
-          Sulje
-        </Button>
-      </Modal.Footer>
     </Modal>
   )
 }
