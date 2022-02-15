@@ -1,12 +1,11 @@
 import { AllRecords } from './../../../../types/types.d'
 import { CrewMember } from './../../../../lib/db/entity/CrewMember'
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { getManager, getRepository, IsNull, Not } from 'typeorm'
+import { getManager, IsNull } from 'typeorm';
 import { validate, ValidationError } from 'class-validator'
 import { Record } from '../../../../lib/db/entity/Record'
 import { Ship } from '../../../../lib/db/entity/Ship'
 import { getConn } from '../../../../lib/db/connection'
-import { instanceToPlain } from 'class-transformer'
 
 export default async function handler(
   req: NextApiRequest,
@@ -28,11 +27,13 @@ export default async function handler(
   }
 
   async function getShipRecords() {
-    const memberRecords = await memberRepo
+    let memberRecords = await memberRepo
       .createQueryBuilder('crewMember')
       .leftJoinAndSelect('crewMember.records', 'record')
       .where({ ship: shipId })
       .getMany()
+
+      memberRecords =  memberRecords.filter( member => member.records.length !== 0 )
 
     const unnamedRecords = await recordRepo
       .createQueryBuilder('record')
