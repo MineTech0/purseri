@@ -3,6 +3,7 @@ import type { AppProps } from 'next/app'
 import { NextUIProvider } from '@nextui-org/react'
 import { SessionProvider, signIn, useSession } from 'next-auth/react'
 import React from 'react'
+import { GeistProvider, CssBaseline } from '@geist-ui/react'
 
 const Auth: React.FC<{}> = ({ children }) => {
   const { data: session, status } = useSession()
@@ -22,22 +23,18 @@ const Auth: React.FC<{}> = ({ children }) => {
 }
 
 const RESTRICTED_PATHS = ['/dashboard']
-function MyApp({
-  Component,
-  router: { route },
-  pageProps: {
-    session,
-    ...pageProps
-  },
-}: AppProps) {
+function MyApp({ Component, router: { route }, pageProps: { session, ...pageProps } }: AppProps) {
   const requireAuth = RESTRICTED_PATHS.some((path) => route.startsWith(path))
   return (
     <SessionProvider session={session}>
       {requireAuth ? (
         <Auth>
-          <NextUIProvider>
-            <Component {...pageProps} />
-          </NextUIProvider>
+          <GeistProvider>
+            <CssBaseline />
+            <NextUIProvider>
+              <Component {...pageProps} />
+            </NextUIProvider>
+          </GeistProvider>
         </Auth>
       ) : (
         <NextUIProvider>
