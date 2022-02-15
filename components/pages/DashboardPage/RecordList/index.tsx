@@ -31,9 +31,9 @@ const RecordList = ({ ship }: Props): JSX.Element | null => {
           <Text>Määrä: {records.memberRecords.length}</Text>
         </Grid.Container>
       </Grid>
-      {records.memberRecords.map((record, i) => (
-        <Grid key={i}>
-          <MemberRecordCard record={record} />
+      {records.memberRecords.map((member) => (
+        <Grid key={member.id}>
+          <MemberRecordCard crewMember={member} memberClick={() => console.log(member)} />
         </Grid>
       ))}
       <Spacer y={3}/>

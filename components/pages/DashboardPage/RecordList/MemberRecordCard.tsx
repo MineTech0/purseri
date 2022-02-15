@@ -1,13 +1,14 @@
 import { Button, Card, Grid, Text } from '@nextui-org/react'
 import React from 'react'
+import { CrewMember } from '../../../../lib/db/entity/CrewMember'
 import { MemberRecord } from '../../../../types/types'
 
 interface Props {
-  record: MemberRecord
+  crewMember: CrewMember
   memberClick: () => void
 }
 
-const MemberRecordCard = ({ record, memberClick }: Props): JSX.Element => {
+const MemberRecordCard = ({ crewMember, memberClick }: Props): JSX.Element => {
   return (
     <Card>
       <Grid.Container justify="space-between" alignItems="center">
@@ -15,11 +16,11 @@ const MemberRecordCard = ({ record, memberClick }: Props): JSX.Element => {
           <Grid.Container direction="column">
             <Grid>
               <Text b size={17}>
-                {record.fullname}
+                {crewMember.firstName} {crewMember.lastName}
               </Text>
             </Grid>
             <Grid>
-              <Text>{record.count}</Text>
+              <Text>{crewMember.records.length}</Text>
             </Grid>
           </Grid.Container>
         </Grid>
