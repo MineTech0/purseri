@@ -17,8 +17,15 @@
     "incremental": true,
     "strictPropertyInitialization": false,
     "emitDecoratorMetadata": true,
-    "typeRoots": ["./types"]
+    "typeRoots": ["./types"],
+    "baseUrl": ".",
+    "paths": {
+      "@commomComponents": ["components/common/*"],
+      "@pages": ["components/pages/*"],
+      "@entities": ["lib/db/entity"],
+  }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules"],
+  
 }

@@ -4,13 +4,14 @@ import { MemberRecord } from '../../../../types/types'
 
 interface Props {
   record: MemberRecord
+  memberClick: () => void
 }
 
-const MemberRecordCard = ({ record }: Props): JSX.Element => {
+const MemberRecordCard = ({ record, memberClick }: Props): JSX.Element => {
   return (
     <Card>
       <Grid.Container justify="space-between" alignItems="center">
-        <Grid onClick={() => console.log('Card clicked')}>
+        <Grid onClick={memberClick}>
           <Grid.Container direction="column">
             <Grid>
               <Text b size={17}>
