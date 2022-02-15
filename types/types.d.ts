@@ -1,3 +1,4 @@
+import { CrewMember } from './../lib/db/entity/CrewMember';
 import { Record } from "../lib/db/entity/Record"
 
 export interface RecordFormData {
@@ -41,6 +42,6 @@ export interface MemberRecord {
 }
 
 export interface AllRecords {
-  memberRecords: MemberRecord[];
+  memberRecords: CrewMember[];
   unnamedRecords: Record[]
 }
