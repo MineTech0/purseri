@@ -28,24 +28,21 @@ export default async function handler(
   }
 
   async function getShipRecords() {
-      const memberRecords = await conn
-        .createQueryBuilder()
-        .select([`record.firstName || ' ' || record.lastName as fullName`, `COUNT(record.id) as count`])
-        .from(Record, 'record')
-        .where('record.ship = :id', { id: shipId })
-        .andWhere({ crewMember: Not(IsNull()) })
-        .groupBy('fullName')
-        .getRawMany()
-      
-      const unnamedRecords = await recordRepo
-        .createQueryBuilder('record')
-        .where('record.ship = :id', { id: shipId })
-        .andWhere({ crewMember: IsNull() })
-        .getMany()
-      return res.status(200).json({
-        memberRecords,
-        unnamedRecords
-      })
+    const memberRecords = await memberRepo
+      .createQueryBuilder('crewMember')
+      .leftJoinAndSelect('crewMember.records', 'record')
+      .where({ ship: shipId })
+      .getMany()
+
+    const unnamedRecords = await recordRepo
+      .createQueryBuilder('record')
+      .where('record.ship = :id', { id: shipId })
+      .andWhere({ crewMember: IsNull() })
+      .getMany()
+    return res.status(200).json({
+      memberRecords,
+      unnamedRecords,
+    })
   }
 
   async function createShipRecord() {
