@@ -1,4 +1,5 @@
-import { Grid, Spacer, Text, useModal } from '@nextui-org/react'
+import { Button, Grid, Input, Spacer, Text, useModal } from '@nextui-org/react'
+import { getMonthAndYear } from 'lib/utils'
 import { useEffect, useState } from 'react'
 import { CrewMember } from '../../../../lib/db/entity/CrewMember'
 import { Ship } from '../../../../lib/db/entity/Ship'
@@ -7,6 +8,7 @@ import { AllRecords } from '../../../../types/types'
 import MemberModal from '../Modals/MemberModal'
 import MemberRecordCard from './MemberRecordCard'
 import NoRecordsText from './NoRecordsText'
+import RecordsWrapper from './RecordsWrapper'
 import UnnamedRecordCard from './UnnamedRecordCard'
 
 interface Props {
@@ -17,47 +19,37 @@ const RecordList = ({ ship }: Props): JSX.Element | null => {
   const [records, setRecords] = useState<AllRecords>()
   const [selectedMember, setSelectedMember] = useState<CrewMember | null>(null)
   const { setVisible, bindings } = useModal()
+  const [month, setMonth] = useState(getMonthAndYear())
 
   useEffect(() => {
-    ShipRecordService.getShipRecords(ship.id).then((rec) => {
+    ShipRecordService.getShipRecords(ship.id, month).then((rec) => {
       setRecords(rec)
     })
-  }, [ship])
-  if (!records || records.memberRecords.length + records.unnamedRecords.length === 0) {
-    return <NoRecordsText />
-  }
+  }, [ship, month])
+
   const memberClick = (member: CrewMember) => {
     setSelectedMember(member)
-    setVisible(true)  
+    setVisible(true)
   }
-  
 
   return (
     <Grid.Container direction="column" gap={1}>
       <Grid>
-        <Grid.Container justify="space-between">
-          <Text h4>Miehistön ilmoitukset</Text>
-          <Text>Määrä: {records.memberRecords.length}</Text>
-        </Grid.Container>
+        <Input
+          bordered
+          color="primary"
+          type={'month'}
+          value={month}
+          max={getMonthAndYear()}
+          onChange={(e) => setMonth(e.target.value)}
+        />
       </Grid>
-      {records.memberRecords.map((member) => (
-        <Grid key={member.id}>
-          <MemberRecordCard crewMember={member} memberClick={() => memberClick(member)} />
-        </Grid>
-      ))}
+      {!records || records.memberRecords.length + records.unnamedRecords.length === 0 ? (
+        <NoRecordsText />
+      ) : (
+        <RecordsWrapper records={records} memberClick={memberClick} />
+      )}
 
-      <Spacer y={3} />
-      <Grid>
-        <Grid.Container justify="space-between">
-          <Text h4>Ei miehistön ilmoitukset</Text>
-          <Text>Määrä: {records.unnamedRecords.length}</Text>
-        </Grid.Container>
-      </Grid>
-      {records.unnamedRecords.map((record, i) => (
-        <Grid key={record.id}>
-          <UnnamedRecordCard record={record} />
-        </Grid>
-      ))}
       <MemberModal crewMember={selectedMember} bindings={bindings} />
     </Grid.Container>
   )

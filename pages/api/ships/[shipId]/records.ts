@@ -1,7 +1,7 @@
 import { AllRecords } from './../../../../types/types.d'
 import { CrewMember } from './../../../../lib/db/entity/CrewMember'
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { getManager, IsNull } from 'typeorm'
+import { Between, getManager, IsNull } from 'typeorm'
 import { validate, ValidationError } from 'class-validator'
 import { Record } from '../../../../lib/db/entity/Record'
 import { Ship } from '../../../../lib/db/entity/Ship'
@@ -11,7 +11,7 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<Record | Record[] | ValidationError[] | AllRecords>
 ) {
-  const { shipId } = req.query
+  const { shipId, monthAndYear } = req.query
   const conn = await getConn()
   const recordRepo = conn.getRepository(Record)
   const shipRepo = conn.getRepository(Ship)
@@ -27,12 +27,19 @@ export default async function handler(
   }
 
   async function getShipRecords() {
+    if (monthAndYear === undefined) {
+      return res.status(401).json({})
+    }
+    const firstDay = new Date(monthAndYear as string)
+    const lastDay = new Date(firstDay.getFullYear(), firstDay.getMonth() + 1, 0)
+
     let memberRecords = await memberRepo
       .createQueryBuilder('crewMember')
-      .leftJoinAndSelect('crewMember.records', 'record')
-      .where({ ship: shipId })
+      .leftJoinAndSelect('crewMember.records', 'records')
+      .where(`records.date BETWEEN :first AND :last`,{first:firstDay,last:lastDay})
+      .andWhere({ ship: shipId })
       .orderBy({
-        'record.date': 'DESC',
+        'records.date': 'DESC',
       })
       .getMany()
 
@@ -42,6 +49,7 @@ export default async function handler(
       .createQueryBuilder('record')
       .where('record.ship = :id', { id: shipId })
       .andWhere({ crewMember: IsNull() })
+      .andWhere({ date: Between(firstDay.toISOString(), lastDay.toISOString()) })
       .getMany()
     return res.status(200).json({
       memberRecords,

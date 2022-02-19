@@ -3,7 +3,7 @@ import type { AppProps } from 'next/app'
 import { NextUIProvider } from '@nextui-org/react'
 import { SessionProvider, signIn, useSession } from 'next-auth/react'
 import React from 'react'
-import { GeistProvider, CssBaseline } from '@geist-ui/react'
+import { CssBaseline, GeistProvider } from '@geist-ui/core'
 
 const Auth: React.FC<{}> = ({ children }) => {
   const { data: session, status } = useSession()
@@ -30,7 +30,6 @@ function MyApp({ Component, router: { route }, pageProps: { session, ...pageProp
       {requireAuth ? (
         <Auth>
           <GeistProvider>
-            <CssBaseline />
             <NextUIProvider>
               <Component {...pageProps} />
             </NextUIProvider>
