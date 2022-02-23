@@ -1,4 +1,4 @@
-import { Button, Col, Modal, Row, Text } from '@nextui-org/react'
+import { Button, Col, Grid, Modal, Row, Spacer, Text } from '@nextui-org/react'
 import { useRouter } from 'next/router'
 import React from 'react'
 import { Ship } from '../../../../../lib/db/entity/Ship'
@@ -64,9 +64,9 @@ const ShipModal = ({ visible, closeHandler, ship }: Props): JSX.Element | null =
       value: ship.area,
     },
   ]
-const crewButtonHandler = () => {
-  router.push(`/dashboard/ship/${ship.id}/crew`)
-}
+  const crewButtonHandler = () => {
+    router.push(`/dashboard/ship/${ship.id}/crew`)
+  }
 
   return (
     <Modal closeButton aria-labelledby="modal-title" open={visible} onClose={closeHandler}>
@@ -87,13 +87,29 @@ const crewButtonHandler = () => {
           </Row>
         ))}
       </Modal.Body>
-      <Modal.Footer>
-        <Button auto flat color="error" onClick={closeHandler}>
-          Sulje
-        </Button>
-        <Button auto flat color="primary" onClick={crewButtonHandler}>
-          Miehistö
-        </Button>
+      <Modal.Footer justify="space-between">
+        <Grid.Container justify="space-between">
+          <Grid>
+            <Button auto flat color="secondary" >
+            <a href={`/api/ships/${ship.id}/qr`}>QR</a>
+            </Button>
+          </Grid>
+          <Grid>
+            <Grid.Container direction="row" justify="space-between">
+              <Grid>
+                <Button auto flat color="error" onClick={closeHandler}>
+                  Sulje
+                </Button>
+              </Grid>
+              <Spacer x={0.3} />
+              <Grid>
+                <Button auto flat color="primary" onClick={crewButtonHandler}>
+                  Miehistö
+                </Button>
+              </Grid>
+            </Grid.Container>
+          </Grid>
+        </Grid.Container>
       </Modal.Footer>
     </Modal>
   )
