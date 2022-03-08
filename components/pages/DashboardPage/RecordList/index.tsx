@@ -1,4 +1,6 @@
 import { Button, Grid, Input, Spacer, Text, useModal } from '@nextui-org/react'
+import axios from 'axios'
+import FileButton from 'components/common/fileButton'
 import { getMonthAndYear } from 'lib/utils'
 import { useEffect, useState } from 'react'
 import { CrewMember } from '../../../../lib/db/entity/CrewMember'
@@ -31,19 +33,50 @@ const RecordList = ({ ship }: Props): JSX.Element | null => {
     setSelectedMember(member)
     setVisible(true)
   }
+  const downloadNote = () => {
+    axios
+      .post<Blob>(
+        `/api/ships/${ship.id}/print`,
+        {
+          date: month,
+          memberRecords: records?.memberRecords,
+        },
+        {
+          responseType: 'blob',
+          timeout: 30000,
+        }
+      )
+      .then((result) => {
+        const link = document.createElement('a')
+        link.href = URL.createObjectURL(result.data)
+        link.download = `${month}-meripäiväilmoitukset.pdf`
+        document.body.append(link)
+        link.click()
+        link.remove()
+        // in case the Blob uses a lot of memory
+        setTimeout(() => URL.revokeObjectURL(link.href), 7000)
+      })
+  }
 
   return (
     <Grid.Container direction="column" gap={1}>
-      <Grid>
-        <Input
-          bordered
-          color="primary"
-          type={'month'}
-          value={month}
-          max={getMonthAndYear()}
-          onChange={(e) => setMonth(e.target.value)}
-        />
-      </Grid>
+      <Grid.Container direction="row" justify="space-between" gap={1}>
+        <Grid>
+          <Input
+            bordered
+            color="primary"
+            type={'month'}
+            value={month}
+            max={getMonthAndYear()}
+            onChange={(e) => setMonth(e.target.value)}
+          />
+        </Grid>
+        {!records || records.memberRecords.length + records.unnamedRecords.length !== 0 ? (
+          <Grid>
+            <FileButton onClick={() => downloadNote()}/>
+          </Grid>
+        ) : null}
+      </Grid.Container>
       {!records || records.memberRecords.length + records.unnamedRecords.length === 0 ? (
         <NoRecordsText />
       ) : (

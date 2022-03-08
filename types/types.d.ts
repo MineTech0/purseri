@@ -36,12 +36,11 @@ export interface CrewMemberFormData {
   socialSecurityNumber: string
 }
 
-export interface MemberRecord {
-  count: number;
-  fullname: string
+export interface MemberRecord extends CrewMember {
+  records: Record[]
 }
 
 export interface AllRecords {
-  memberRecords: CrewMember[];
+  memberRecords: MemberRecord[];
   unnamedRecords: Record[]
 }
