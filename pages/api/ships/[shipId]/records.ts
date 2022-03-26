@@ -1,11 +1,12 @@
 import { AllRecords } from './../../../../types/types.d'
 import { CrewMember } from './../../../../lib/db/entity/CrewMember'
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { Between, getManager, IsNull } from 'typeorm'
+import { Between, getManager, IsNull, Like } from 'typeorm'
 import { validate, ValidationError } from 'class-validator'
 import { Record } from '../../../../lib/db/entity/Record'
 import { Ship } from '../../../../lib/db/entity/Ship'
 import { getConn } from '../../../../lib/db/connection'
+import { convertBirthDateToString } from 'lib/utils'
 
 export default async function handler(
   req: NextApiRequest,
@@ -67,9 +68,11 @@ export default async function handler(
       const member = await memberRepo.findOne({
         firstName: record.firstName,
         lastName: record.lastName,
+        socialSecurityNumber: Like(`${convertBirthDateToString(req.body.birthDate)}%`)
       })
       if (member) {
         record.crewMember = member
+        record.socialSecurityNumber = null
       }
       const ship = await shipRepo.findOne(shipId as string)
       if (!ship) return res.status(400)

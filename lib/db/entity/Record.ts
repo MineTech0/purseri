@@ -15,6 +15,9 @@ export class Record {
     @Column('varchar')
     lastName : string
 
+    @Column('varchar', { select: false , default: null })
+    socialSecurityNumber: string | null
+
     @Column('varchar')
     reason: string
 

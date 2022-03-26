@@ -1,9 +1,10 @@
+import { RecordFormDataWithSocialNumber } from './../types/types.d';
 import { Record } from '../lib/db/entity/Record'
 import { AllRecords, RecordFormData } from '../types/types'
 import instance from './instance'
 
 class ShipRecordService {
-  async addRecord(shipId: string, formData: RecordFormData) {
+  async addRecord(shipId: string, formData: RecordFormData | RecordFormDataWithSocialNumber) {
     return (await instance.post<Record>(`/ships/${shipId}/records`, formData)).data
   }
 

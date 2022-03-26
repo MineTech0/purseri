@@ -5,6 +5,7 @@ import { Ship } from '../../../../../lib/db/entity/Ship'
 import { getConn } from '../../../../../lib/db/connection'
 import { CrewMember } from '../../../../../lib/db/entity/CrewMember'
 import { Record } from '../../../../../lib/db/entity/Record'
+import { convertBirthDateToString } from 'lib/utils'
 
 export default async function handler(
   req: NextApiRequest,
@@ -12,7 +13,7 @@ export default async function handler(
     CrewMember | CrewMember[] | ValidationError[] | { name: string; count: number }
   >
 ) {
-  const { shipId } = req.query
+  const { shipId, firstName, lastName, birthDate } = req.query
   const conn = await getConn()
   const crewMemberRepo = conn.getRepository(CrewMember)
   const shipRepo = conn.getRepository(Ship)
@@ -28,11 +29,25 @@ export default async function handler(
   }
 
   async function getShipCrew() {
-    const records = await crewMemberRepo
+    if(firstName && lastName && birthDate){
+      const records = await crewMemberRepo
       .createQueryBuilder('crewMember')
       .where('crewMember.ship = :id', { id: shipId })
+      .andWhere({
+        firstName,
+        lastName
+      })
+      .where("crewMember.socialSecurityNumber like :number", { number:`${convertBirthDateToString(new Date(birthDate as string))}%` })
       .getMany()
-    return res.status(200).json(records)
+      return res.status(200).json(records[0])
+    }
+    else{
+      const records = await crewMemberRepo
+        .createQueryBuilder('crewMember')
+        .where('crewMember.ship = :id', { id: shipId })
+        .getMany()
+        return res.status(200).json(records)
+    }
   }
 
   async function createShipCrewMember() {

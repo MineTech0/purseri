@@ -7,46 +7,77 @@ import Layout from '../../Layout'
 import RecordForm from './RecordForm'
 import ResultPage from '../../common/ResultPage'
 import ShipRecordService from '../../../services/ShipRecordService'
+import ShipCrewMemberService from 'services/ShipCrewMemberService'
+import useAskSocial from './useAskSocial'
 
 interface Props {
   ship: Ship
 }
 
 const AddPage = ({ ship }: Props): JSX.Element => {
-  const [result, setResult] =
-    useState<FormResult>()
+  const [result, setResult] = useState<FormResult>()
+  const { AskModal, getNumber } = useAskSocial()
 
   const sendFormHandler = (data: RecordFormData) => {
-    ShipRecordService.addRecord(ship.id,data)
-      .then((_newData) => {
-        setResult({
-          type: 'success',
-          message: 'Kiitos ilmoituksesta',
-        })
-      })
-      .catch((error) => {
-        setResult({
-          type: 'error',
-          message: error.toString(),
-        })
-      })
+    ShipCrewMemberService.findCrewMemberByName(
+      ship.id,
+      data.firstName,
+      data.lastName,
+      data.birthDate.toISOString()
+    ).then(async (crewMember) => {
+      if (crewMember) {
+        ShipRecordService.addRecord(ship.id, data)
+          .then((_newData) => {
+            setResult({
+              type: 'success',
+              message: 'Kiitos ilmoituksesta',
+            })
+          })
+          .catch((error) => {
+            setResult({
+              type: 'error',
+              message: error.toString(),
+            })
+          })
+      } else {
+        const number = await getNumber()
+        if (number) {
+          ShipRecordService.addRecord(ship.id, { ...data, socialSecurityNumber: number })
+            .then((_newData) => {
+              setResult({
+                type: 'success',
+                message: 'Kiitos ilmoituksesta',
+              })
+            })
+            .catch((error) => {
+              setResult({
+                type: 'error',
+                message: error.toString(),
+              })
+            })
+        }
+      }
+    })
   }
   if (result) return <ResultPage message={result.message} type={result.type} />
 
   return (
-    <Layout>
-      <Grid.Container direction="column" gap={2}>
-        <Grid>
-          <Text h2={true}>Ilmoita meripäivä</Text>
-        </Grid>
-        <Grid>
-          <ShipInfo ship={ship} />
-        </Grid>
-        <Grid>
-          <RecordForm sendForm={sendFormHandler} />
-        </Grid>
-      </Grid.Container>
-    </Layout>
+    <>
+      <Layout>
+        <Grid.Container direction="column" gap={2}>
+          <Grid>
+            <Text h2={true}>Ilmoita meripäivä</Text>
+          </Grid>
+          <Grid>
+            <ShipInfo ship={ship} />
+          </Grid>
+          <Grid>
+            <RecordForm sendForm={sendFormHandler} />
+          </Grid>
+        </Grid.Container>
+      </Layout>
+      <AskModal />
+    </>
   )
 }
 
