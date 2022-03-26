@@ -1,3 +1,4 @@
+import { RecordFormData } from './types.d';
 import { CrewMember } from './../lib/db/entity/CrewMember';
 import { Record } from "../lib/db/entity/Record"
 
@@ -7,9 +8,13 @@ export interface RecordFormData {
   reason: string
   date: Date
   info: string
+  birthDate: Date
 }
 export interface RecordFormDataWithShip extends RecordFormData {
   shipId: string
+}
+export interface RecordFormDataWithSocialNumber extends RecordFormData {
+  socialSecurityNumber: string
 }
 export interface ShipFormData {
   name: string
@@ -44,3 +49,4 @@ export interface AllRecords {
   memberRecords: MemberRecord[];
   unnamedRecords: Record[]
 }
+

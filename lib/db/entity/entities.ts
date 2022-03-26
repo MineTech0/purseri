@@ -6,7 +6,6 @@ import {
     OneToMany,
     ValueTransformer,
   } from "typeorm"
-import { Ship } from "./Ship"
   
   const transformer: Record<"date" | "bigint", ValueTransformer> = {
     date: {

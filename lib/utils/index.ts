@@ -8,3 +8,10 @@ export const splitDate = (date: string) => {
   const newDate = date.split('-')
   return { year: newDate[0], month: newDate[1] }
 }
+/**
+ * @returns like `101020`
+ */
+export const convertBirthDateToString = (date: Date) => {
+  return ('0' + (new Date(date).getDate())).slice(-2) + ('0' + (new Date(date).getMonth()+1)).slice(-2) + (new Date(date).getFullYear()).toString().slice(-2)
+}
+

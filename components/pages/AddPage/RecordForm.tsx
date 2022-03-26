@@ -16,6 +16,7 @@ const schema = yup
     reason: yup.string().required('Tehtävä vaaditaan'),
     date: yup.date().required('Päivä vaaditaan'),
     info: yup.string().default(''),
+    birthDate: yup.date().required('Syntymäpäivä vaaditaan')
   })
   .required()
 
@@ -56,16 +57,26 @@ const RecordForm = ({ sendForm }: Props): JSX.Element => {
             helperText={errors.lastName?.message}
           />
         </Grid>
-
         <Grid>
           <Input
             css={{ w: '100%' }}
             bordered
-            label="Päivä*"
+            label="Syntymäpäivä*"
+            color="default"
+            type="date"
+            {...register('birthDate')}
+            helperColor={'error'}
+            helperText={errors.birthDate?.message}
+          />
+        </Grid>
+        <Grid>
+          <Input
+            css={{ w: '100%' }}
+            bordered
+            label="Meripäivä*"
             color="default"
             type="date"
             {...register('date')}
-            value={new Date().toISOString().substring(0, 10)}
             helperColor={'error'}
             helperText={errors.date?.message}
           />
@@ -92,7 +103,6 @@ const RecordForm = ({ sendForm }: Props): JSX.Element => {
             helperText={errors.info?.message}
           />
         </Grid>
-
         <Grid>
           <Button size={'md'} color="primary" rounded type="submit" css={{ w: '100%' }}>
             Lähetä
