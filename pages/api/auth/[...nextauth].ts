@@ -1,8 +1,6 @@
 import { TypeORMLegacyAdapter } from '@next-auth/typeorm-legacy-adapter'
 import NextAuth from 'next-auth'
 import GoogleProvider from 'next-auth/providers/google'
-import allEntities from '../../../lib/db/allEntities'
-import * as entities from '../../../lib/db/entity/entities'
 
 export default NextAuth({
   adapter: TypeORMLegacyAdapter(
@@ -13,10 +11,8 @@ export default NextAuth({
       username: process.env.TYPEORM_USERNAME as string,
       password: process.env.TYPEORM_PASSWORD as string,
       database: process.env.TYPEORM_DATABASE as string,
-      entities: allEntities,
       synchronize: true,
-    },
-    { entities }
+    }
   ),
   providers: [
     GoogleProvider({
@@ -24,7 +20,7 @@ export default NextAuth({
       clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
     }),
   ],
-  secret: 'secret',
+  secret: process.env.NEXTAUTH_SECRET,
   callbacks: {
     async session({ session, user }) {
       session.user = user
