@@ -1,6 +1,5 @@
 import { styled } from '@nextui-org/react'
-import React from 'react'
-import { PaperDownload, Plus } from 'react-iconly'
+import { PaperDownload } from 'react-iconly';
 
 interface Props {
     onClick: () => void

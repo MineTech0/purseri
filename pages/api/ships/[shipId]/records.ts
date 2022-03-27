@@ -29,7 +29,7 @@ export default async function handler(
 
   async function getShipRecords() {
     if (monthAndYear === undefined) {
-      return res.status(401).json({})
+      return res.status(401)
     }
     const firstDay = new Date(monthAndYear as string)
     const lastDay = new Date(firstDay.getFullYear(), firstDay.getMonth() + 1, 0)
@@ -37,7 +37,7 @@ export default async function handler(
     let memberRecords = await memberRepo
       .createQueryBuilder('crewMember')
       .leftJoinAndSelect('crewMember.records', 'records')
-      .where(`records.date BETWEEN :first AND :last`,{first:firstDay,last:lastDay})
+      .where(`records.date BETWEEN :first AND :last`, { first: firstDay, last: lastDay })
       .andWhere({ ship: shipId })
       .orderBy({
         'records.date': 'DESC',
@@ -68,7 +68,7 @@ export default async function handler(
       const member = await memberRepo.findOne({
         firstName: record.firstName,
         lastName: record.lastName,
-        socialSecurityNumber: Like(`${convertBirthDateToString(req.body.birthDate)}%`)
+        socialSecurityNumber: Like(`${convertBirthDateToString(req.body.birthDate)}%`),
       })
       if (member) {
         record.crewMember = member

@@ -1,5 +1,4 @@
 import { GetServerSideProps } from 'next'
-import { getRepository } from 'typeorm'
 import AddPage from '../../components/pages/AddPage'
 import { getConn } from '../../lib/db/connection'
 import { Ship } from '../../lib/db/entity/Ship'

@@ -1,6 +1,6 @@
 import { Button, Grid, Input, Spacer, Text, useModal } from '@nextui-org/react'
 import axios from 'axios'
-import FileButton from 'components/common/fileButton'
+import FileButton from 'components/common/FileButton'
 import { getMonthAndYear } from 'lib/utils'
 import { useEffect, useState } from 'react'
 import { CrewMember } from '../../../../lib/db/entity/CrewMember'

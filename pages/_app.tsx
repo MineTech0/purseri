@@ -3,13 +3,13 @@ import type { AppProps } from 'next/app'
 import { NextUIProvider } from '@nextui-org/react'
 import { SessionProvider, signIn, useSession } from 'next-auth/react'
 import React from 'react'
-import { CssBaseline, GeistProvider } from '@geist-ui/core'
+import { GeistProvider } from '@geist-ui/core';
 
 const Auth: React.FC<{}> = ({ children }) => {
   const { data: session, status } = useSession()
   const isUser = !!session?.user
   React.useEffect(() => {
-    if (status == 'loading') return // Do nothing while loading
+    if (status === 'loading') return // Do nothing while loading
     if (!isUser) signIn() // If not authenticated, force log in
   }, [isUser, status])
 

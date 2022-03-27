@@ -13,7 +13,7 @@ const NewShipPage = (props: Props): JSX.Element => {
   const router = useRouter()
   const sendFormHandler = (data: ShipFormData) => {
     ShipService.create(data)
-      .then((data) => {
+      .then(() => {
         setResult({
           type: 'success',
           message: 'Uusi alus lisätty',
@@ -22,7 +22,7 @@ const NewShipPage = (props: Props): JSX.Element => {
           router.push('/dashboard')
         }, 3000);
       })
-      .catch((error: any) => {
+      .catch((error: string) => {
         setResult({
           type: 'error',
           message: error.toString(),

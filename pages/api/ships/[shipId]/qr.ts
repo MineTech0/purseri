@@ -7,7 +7,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   const qrStream = new PassThrough()
   res.setHeader('Content-Type', 'image/png');
   res.setHeader('Content-Disposition', 'image; filename=PurseriQrCode.png');
-  const result = await QRCode.toFileStream(qrStream, `${process.env.NEXTAUTH_URL}/add/${shipId}`, {
+  await QRCode.toFileStream(qrStream, `${process.env.NEXTAUTH_URL}/add/${shipId}`, {
     type: 'png',
     width: 200
   })

@@ -1,5 +1,4 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { DeleteResult, getManager } from 'typeorm'
 import { validate, ValidationError } from 'class-validator'
 import { Ship } from '../../../../../lib/db/entity/Ship'
 import { getConn } from '../../../../../lib/db/connection'
@@ -63,7 +62,7 @@ export default async function handler(
 
     if (member) {
       await recordRepo.createQueryBuilder().relation(CrewMember, 'records').of(memberId).add(null)
-      const result = await crewMemberRepo.remove(member, {})
+      await crewMemberRepo.remove(member, {})
       res.status(200).json(true)
     }
   }

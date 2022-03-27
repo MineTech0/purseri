@@ -1,6 +1,6 @@
 import { Ship } from './../../../lib/db/entity/Ship'
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { getManager, getRepository } from 'typeorm'
+import { getManager } from 'typeorm';
 import { validate,  ValidationError } from 'class-validator'
 import { getConn } from '../../../lib/db/connection'
 import { getSession } from 'next-auth/react'
