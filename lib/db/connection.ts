@@ -21,13 +21,13 @@ export const connectionOptions: ConnectionOptions = {
   logging: ['query', 'error'],
 }
 const allEntities = [
+  CrewMember,
   Record,
   Ship,
   UserEntity,
   SessionEntity,
   VerificationTokenEntity,
   AccountEntity,
-  CrewMember,
 ]
 
 function entitiesChanged(prevEntities: any[], newEntities: any[]): boolean {

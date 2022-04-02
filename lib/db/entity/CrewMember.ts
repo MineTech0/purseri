@@ -19,10 +19,10 @@ export class CrewMember {
   @Column('varchar')
   role: string
 
-  @ManyToOne(() => Ship, (ship) => ship.crew)
+  @ManyToOne('Ship', 'crew')
   ship: Ship
 
-  @OneToMany(() => Record, (record) => record.crewMember, {
+  @OneToMany('Record', 'crewMember', {
     cascade: ['update','remove'],
   })
   records: Record[]

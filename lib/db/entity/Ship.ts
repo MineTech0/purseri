@@ -44,10 +44,10 @@ export class Ship {
     @Column('int')
     area: number
 
-    @OneToMany(() => Record, record => record.ship)
+    @OneToMany('Record', 'ship')
     records: Record[];
 
-    @OneToMany(() => CrewMember, member => member.ship)
+    @OneToMany('CrewMember', 'ship')
     crew: CrewMember[];
 
     @ManyToOne(() => UserEntity)
