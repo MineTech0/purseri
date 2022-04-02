@@ -5,6 +5,7 @@ declare module "next-auth/jwt" {
   interface JWT extends JWT {
     user: {
       id: string
+      name: string | null
     }
   }
 }
@@ -13,6 +14,7 @@ declare module "next-auth" {
   interface Session extends Session {
     user: {
       id:string
+      name: string
     }
   }
 }

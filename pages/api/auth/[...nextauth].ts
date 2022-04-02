@@ -29,7 +29,8 @@ export default NextAuth({
     jwt: async ({ user, token }) => {
       if (user) {
         token.user = {
-          id: user.id
+          id: user.id,
+          name: user.name ?? null
         }
       }
       return token
