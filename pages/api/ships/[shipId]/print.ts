@@ -6,8 +6,9 @@ import { PDFDocument } from 'pdf-lib'
 import fs from 'fs'
 import path from 'path'
 import { getConn } from 'lib/db/connection'
+import apiAuth from 'lib/utils/apiAuth'
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== 'POST') {
     return res.status(405).end(`Method ${req.method} Not Allowed`)
   }
@@ -46,3 +47,4 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   res.write(pdfBytes, 'binary')
   res.end()
 }
+export default apiAuth(handler)

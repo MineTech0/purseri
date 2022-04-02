@@ -7,8 +7,9 @@ import { Record } from '../../../../lib/db/entity/Record'
 import { Ship } from '../../../../lib/db/entity/Ship'
 import { getConn } from '../../../../lib/db/connection'
 import { convertBirthDateToString } from 'lib/utils'
+import apiAuth from 'lib/utils/apiAuth'
 
-export default async function handler(
+async function handler(
   req: NextApiRequest,
   res: NextApiResponse<Record | Record[] | ValidationError[] | AllRecords>
 ) {
@@ -82,3 +83,4 @@ export default async function handler(
     }
   }
 }
+export default apiAuth(handler)

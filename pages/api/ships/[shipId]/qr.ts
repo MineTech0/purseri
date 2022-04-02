@@ -1,8 +1,9 @@
 import QRCode from 'qrcode'
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { PassThrough } from 'stream'
+import apiAuth from 'lib/utils/apiAuth'
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+async function handler(req: NextApiRequest, res: NextApiResponse) {
   const { shipId } = req.query
   const qrStream = new PassThrough()
   res.setHeader('Content-Type', 'image/png');
@@ -14,3 +15,4 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   qrStream.pipe(res)
 }
+export default apiAuth(handler)

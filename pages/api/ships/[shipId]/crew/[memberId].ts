@@ -4,8 +4,9 @@ import { Ship } from '../../../../../lib/db/entity/Ship'
 import { getConn } from '../../../../../lib/db/connection'
 import { CrewMember } from '../../../../../lib/db/entity/CrewMember'
 import { Record } from '../../../../../lib/db/entity/Record'
+import apiAuth from 'lib/utils/apiAuth'
 
-export default async function handler(
+async function handler(
   req: NextApiRequest,
   res: NextApiResponse<
     CrewMember | CrewMember[] | ValidationError[] | { name: string; count: number } | boolean
@@ -67,3 +68,4 @@ export default async function handler(
     }
   }
 }
+export default apiAuth(handler)
