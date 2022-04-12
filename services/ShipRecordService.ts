@@ -8,6 +8,10 @@ class ShipRecordService {
     return (await instance.post<Record>(`/ships/${shipId}/records`, formData)).data
   }
 
+  async deleteRecord(shipId: string, recordId: string) {
+    return (await instance.delete(`/ships/${shipId}/records/${recordId}`)).data
+  }
+
   async getShipRecords(shipId: string, monthAndYear: string) {
     return (await instance.get<AllRecords>(`/ships/${shipId}/records?monthAndYear=${monthAndYear}`)).data
   }

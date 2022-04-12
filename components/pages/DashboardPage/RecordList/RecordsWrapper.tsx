@@ -8,9 +8,16 @@ import UnnamedRecordCard from './UnnamedRecordCard'
 interface Props {
   records: AllRecords
   memberClick: (member: CrewMember) => void
+  addHandler: (id: string) => void
+  deleteHandler: (id: string) => void
 }
 
-const RecordsWrapper = ({ records, memberClick }: Props): JSX.Element => {
+const RecordsWrapper = ({
+  records,
+  memberClick,
+  addHandler,
+  deleteHandler,
+}: Props): JSX.Element => {
   return (
     <>
       <Grid>
@@ -35,7 +42,11 @@ const RecordsWrapper = ({ records, memberClick }: Props): JSX.Element => {
       </Grid>
       {records.unnamedRecords.map((record, i) => (
         <Grid key={record.id}>
-          <UnnamedRecordCard record={record} />
+          <UnnamedRecordCard
+            addHandler={addHandler}
+            deleteHandler={deleteHandler}
+            record={record}
+          />
         </Grid>
       ))}
     </>

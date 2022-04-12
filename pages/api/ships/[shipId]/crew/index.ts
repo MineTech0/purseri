@@ -62,7 +62,7 @@ async function handler(
       if (!ship) return res.status(400)
       crewMember = await connectRecordToNewCrewMember(crewMember)
       crewMember.ship = ship
-      await getManager().save(crewMember)
+      await crewMemberRepo.save(crewMember)
       return res.status(200).json(crewMember)
     }
   }

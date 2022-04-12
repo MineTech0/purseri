@@ -1,5 +1,5 @@
 import { Button, Input, Modal, Spacer, Text } from '@nextui-org/react'
-import React, { Dispatch, SetStateAction } from 'react'
+import React, { Dispatch, SetStateAction, useEffect } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { CrewMemberFormData } from '../../../types/types'
 import * as yup from 'yup'
@@ -12,6 +12,7 @@ interface Props {
   }
   setVisible: Dispatch<SetStateAction<boolean>>
   sendHandler: (formData: CrewMemberFormData) => void
+  newMember?: CrewMemberFormData | null
 }
 const schema = yup
   .object({
@@ -23,19 +24,29 @@ const schema = yup
   })
   .required()
 
-const NewMemberModal = ({ bindings, setVisible, sendHandler }: Props): JSX.Element => {
+const NewMemberModal = ({ bindings, setVisible, sendHandler, newMember }: Props): JSX.Element => {
   const {
     register,
     handleSubmit,
     reset,
+    setValue,
     formState: { errors },
   } = useForm<CrewMemberFormData>({
     resolver: yupResolver(schema),
   })
+
+  useEffect(() => {
+    if(newMember){
+    setValue('firstName', newMember?.firstName)
+    setValue('lastName', newMember?.lastName)
+    setValue('socialSecurityNumber', newMember?.socialSecurityNumber)
+    }
+  }, [newMember])
+
   const onSubmit: SubmitHandler<CrewMemberFormData> = (data, e) =>{
-    e?.target.reset()
-    setVisible(false)
     sendHandler(data)
+    reset()
+    setVisible(false)
   } 
   const onClose = () => {
     reset()

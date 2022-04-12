@@ -27,7 +27,8 @@ function apiAuth(handler: HandlerI) {
       }
     } catch (err) {
       // global error handler
-      return res.status(400).end(`Error` + JSON.stringify(err))
+      console.log(err)
+      return res.status(400).end(`Error`)
     }
   }
 }

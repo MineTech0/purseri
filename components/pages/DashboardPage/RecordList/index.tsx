@@ -1,7 +1,9 @@
 import { Button, Grid, Input, Spacer, Text, useModal } from '@nextui-org/react'
 import axios from 'axios'
 import FileButton from 'components/common/FileButton'
+import useConfirmation from 'hooks/useConfirmation'
 import { getMonthAndYear } from 'lib/utils'
+import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { CrewMember } from '../../../../lib/db/entity/CrewMember'
 import { Ship } from '../../../../lib/db/entity/Ship'
@@ -22,6 +24,8 @@ const RecordList = ({ ship }: Props): JSX.Element | null => {
   const [selectedMember, setSelectedMember] = useState<CrewMember | null>(null)
   const { setVisible, bindings } = useModal()
   const [month, setMonth] = useState(getMonthAndYear())
+  const { AskConfirmationModal, getConfirmation } = useConfirmation()
+  const router = useRouter()
 
   useEffect(() => {
     ShipRecordService.getShipRecords(ship.id, month).then((rec) => {
@@ -33,6 +37,27 @@ const RecordList = ({ ship }: Props): JSX.Element | null => {
     setSelectedMember(member)
     setVisible(true)
   }
+  const addHandler = (recordId: string) => {
+    router.push(`dashboard/ship/${ship.id}/crew?newMemberRecordId=${recordId}`)
+  }
+
+  const deleteHandler = async(recordId: string) => {
+    if(await getConfirmation('Haluatko varmasti poistaa ilmoituksen')){
+      ShipRecordService.deleteRecord(ship.id, recordId)
+        .then(() => {
+          if (records) {
+            setRecords({
+              memberRecords: records.memberRecords,
+              unnamedRecords: records.unnamedRecords.filter(record => record.id !== recordId),
+            })
+          }
+        })
+        .catch((error) => {
+          console.log(error)
+        })
+    }
+  }
+
   const downloadNote = () => {
     axios
       .post<Blob>(
@@ -73,17 +98,23 @@ const RecordList = ({ ship }: Props): JSX.Element | null => {
         </Grid>
         {!records || records.memberRecords.length + records.unnamedRecords.length !== 0 ? (
           <Grid>
-            <FileButton onClick={() => downloadNote()}/>
+            <FileButton onClick={() => downloadNote()} />
           </Grid>
         ) : null}
       </Grid.Container>
       {!records || records.memberRecords.length + records.unnamedRecords.length === 0 ? (
         <NoRecordsText />
       ) : (
-        <RecordsWrapper records={records} memberClick={memberClick} />
+        <RecordsWrapper
+          records={records}
+          memberClick={memberClick}
+          addHandler={addHandler}
+          deleteHandler={deleteHandler}
+        />
       )}
 
       <MemberModal crewMember={selectedMember} bindings={bindings} />
+      <AskConfirmationModal />
     </Grid.Container>
   )
 }

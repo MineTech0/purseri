@@ -13,7 +13,7 @@ export class CrewMember {
   @Column('varchar')
   lastName: string
 
-  @Column('varchar', { select: false })
+  @Column('varchar', { select: false, unique: true })
   socialSecurityNumber: string
 
   @Column('varchar')

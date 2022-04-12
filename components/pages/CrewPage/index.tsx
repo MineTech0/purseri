@@ -1,10 +1,10 @@
 import { Grid, Text, useModal } from '@nextui-org/react'
-import React, { useState } from 'react'
+import { useRouter } from 'next/router'
+import { useEffect } from 'react'
 import { useResult } from '../../../hooks/useResult'
 import { Ship } from '../../../lib/db/entity/Ship'
 import ShipCrewMemberService from '../../../services/ShipCrewMemberService'
-import ShipService from '../../../services/ShipService'
-import { CrewMemberFormData, FormResult } from '../../../types/types'
+import { CrewMemberFormData } from '../../../types/types'
 import ShipInfo from '../../common/ShipInfo'
 import Layout from '../../Layout'
 import CrewActionBar from './CrewActionBar'
@@ -13,11 +13,19 @@ import NewMemberModal from './NewMemberModal'
 
 interface Props {
   ship: Ship
+  newMember: CrewMemberFormData | null
 }
 
-const CrewPage = ({ ship }: Props): JSX.Element => {
+const CrewPage = ({ ship, newMember }: Props): JSX.Element => {
   const { setVisible, bindings } = useModal()
   const [ResultBannerWrapper, setResult] = useResult()
+  const router = useRouter()
+
+  useEffect(() => {
+    if (newMember) {
+      setVisible(true)
+    }
+  }, [])
 
   const newCrewMember = (formData: CrewMemberFormData) => {
     ShipCrewMemberService.addCrewMember(ship.id, formData)
@@ -27,11 +35,15 @@ const CrewPage = ({ ship }: Props): JSX.Element => {
           type: 'success',
           message: 'Miehistön jäsen lisätty',
         })
+        router.replace({
+          pathname: '/dashboard/ship/[shipId]/crew',
+          query: { shipId: ship.id }
+        })
       })
       .catch((error) => {
         setResult({
           type: 'error',
-          message: error.toString(),
+          message: error.response.data,
         })
       })
   }
@@ -48,7 +60,7 @@ const CrewPage = ({ ship }: Props): JSX.Element => {
       .catch((error) => {
         setResult({
           type: 'error',
-          message: error.toString(),
+          message: error.response.data,
         })
       })
   }
@@ -65,7 +77,7 @@ const CrewPage = ({ ship }: Props): JSX.Element => {
       .catch((error) => {
         setResult({
           type: 'error',
-          message: error.toString(),
+          message: error.response.data,
         })
       })
   }
@@ -97,7 +109,12 @@ const CrewPage = ({ ship }: Props): JSX.Element => {
           </>
         ) : null}
       </Grid.Container>
-      <NewMemberModal bindings={bindings} setVisible={setVisible} sendHandler={newCrewMember} />
+      <NewMemberModal
+        bindings={bindings}
+        setVisible={setVisible}
+        sendHandler={newCrewMember}
+        newMember={newMember}
+      />
     </Layout>
   )
 }
