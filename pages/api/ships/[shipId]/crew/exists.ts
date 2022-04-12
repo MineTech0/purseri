@@ -24,11 +24,11 @@ async function handler(req: NextApiRequest, res: NextApiResponse<{ exists: boole
           firstName,
           lastName,
         })
-        .where('crewMember.socialSecurityNumber like :number', {
+        .andWhere('crewMember.socialSecurityNumber like :number', {
           number: `${convertBirthDateToString(new Date(birthDate as string))}%`,
         })
         .getMany()
-    if (member[0].id)return res.status(200).json({ exists: true })
+    if (member && member[0]?.id) return res.status(200).json({ exists: true })
     else return res.status(200).json({ exists: false })
 
     } else {
