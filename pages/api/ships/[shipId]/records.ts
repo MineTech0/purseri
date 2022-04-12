@@ -1,34 +1,33 @@
 import { AllRecords } from './../../../../types/types.d'
 import { CrewMember } from './../../../../lib/db/entity/CrewMember'
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { Between, getManager, IsNull, Like } from 'typeorm'
+import { Between, IsNull, Like } from 'typeorm'
 import { validate, ValidationError } from 'class-validator'
 import { Record } from '../../../../lib/db/entity/Record'
 import { Ship } from '../../../../lib/db/entity/Ship'
 import { getConn } from '../../../../lib/db/connection'
 import { convertBirthDateToString } from 'lib/utils'
-import apiAuth from 'lib/utils/apiAuth'
+import nc from 'next-connect'
+import apiAuthMiddleware from 'lib/utils/apiAuthMiddleware'
 
-async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse<Record | Record[] | ValidationError[] | AllRecords>
-) {
-  const { shipId, monthAndYear } = req.query
-  const conn = await getConn()
-  const recordRepo = conn.getRepository(Record)
-  const shipRepo = conn.getRepository(Ship)
-  const memberRepo = conn.getRepository(CrewMember)
+const handler = nc<
+  NextApiRequest,
+  NextApiResponse<Record | Record[] | ValidationError[] | AllRecords>
+>({
+  onError: (err, _req, res) => {
+    console.error(err.stack)
+    res.status(500).end('Something broke!')
+  },
+  onNoMatch: (req, res) => {
+    res.status(405).end(`Method ${req.method} Not Allowed`)
+  },
+})
+  .get(apiAuthMiddleware, async (req, res) => {
+    const conn = await getConn()
+    const recordRepo = conn.getRepository(Record)
+    const memberRepo = conn.getRepository(CrewMember)
 
-  switch (req.method) {
-    case 'GET':
-      return getShipRecords()
-    case 'POST':
-      return createShipRecord()
-    default:
-      return res.status(405).end(`Method ${req.method} Not Allowed`)
-  }
-
-  async function getShipRecords() {
+    const { shipId, monthAndYear } = req.query
     if (monthAndYear === undefined) {
       return res.status(401)
     }
@@ -57,9 +56,15 @@ async function handler(
       memberRecords,
       unnamedRecords,
     })
-  }
+  })
+  //any one can access
+  .post(async (req, res) => {
+    const conn = await getConn()
+    const recordRepo = conn.getRepository(Record)
+    const shipRepo = conn.getRepository(Ship)
+    const memberRepo = conn.getRepository(CrewMember)
 
-  async function createShipRecord() {
+    const { shipId } = req.query
     let record = recordRepo.create(req.body as Object)
     const errors = await validate(record)
 
@@ -78,9 +83,9 @@ async function handler(
       const ship = await shipRepo.findOne(shipId as string)
       if (!ship) return res.status(400)
       record.ship = ship
-      await getManager().save(record)
-      return res.status(200).json(record)
+      await conn.getRepository(Record).save(record)
+      return res.status(201).json(record)
     }
-  }
-}
-export default apiAuth(handler)
+  })
+
+export default handler

@@ -19,13 +19,13 @@ class ShipCrewMemberService {
         return (await instance.get<boolean>(`/ships/${shipId}/crew/${memberId}`)).data
     }
 
-    async findCrewMemberByName(
+    async crewMemberExists(
         shipId: string,
         firstName: string,
         lastName: string,
         birthDate: string
     ) {
-        return (await instance.get<boolean>(`/ships/${shipId}/crew/?firstName=${firstName}&lastName=${lastName}&birthDate=${birthDate}`)).data
+        return (await instance.get<{exists: boolean}>(`/ships/${shipId}/crew/exists?firstName=${firstName}&lastName=${lastName}&birthDate=${birthDate}`)).data
     }
 }
 

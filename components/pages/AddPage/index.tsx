@@ -19,13 +19,13 @@ const AddPage = ({ ship }: Props): JSX.Element => {
   const { AskModal, getNumber } = useAskSocial()
 
   const sendFormHandler = (data: RecordFormData) => {
-    ShipCrewMemberService.findCrewMemberByName(
+    ShipCrewMemberService.crewMemberExists(
       ship.id,
       data.firstName,
       data.lastName,
       data.birthDate.toISOString()
-    ).then(async (crewMember) => {
-      if (crewMember) {
+    ).then(async (member) => {
+      if (member.exists) {
         ShipRecordService.addRecord(ship.id, data)
           .then((_newData) => {
             setResult({
