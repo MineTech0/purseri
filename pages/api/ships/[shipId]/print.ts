@@ -1,3 +1,6 @@
+import { MemberRecord, MockMemberRecord } from './../../../../types/types.d'
+import { CrewMember } from 'lib/db/entity/CrewMember'
+import { Record } from 'lib/db/entity/Record'
 import { pdfFormFillRecords } from './../../../../lib/utils/pdfFormFillRecords'
 import { splitDate } from './../../../../lib/utils/index'
 import { Ship } from './../../../../lib/db/entity/Ship'
@@ -22,6 +25,53 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
   )
   const { month, year } = splitDate(req.body.date as string)
 
+  //add non crew records to report
+  const unnamedRecordIds = req.body.unnamedRecordIds
+
+  const unnamedRecords = await conn.getRepository(Record).findByIds(unnamedRecordIds, {
+    select: ['firstName', 'lastName', 'socialSecurityNumber', 'id'],
+  })
+
+  let nonCrewRecords: MockMemberRecord[] = []
+
+  unnamedRecords.forEach((record) => {
+    const member = nonCrewRecords.find(
+      (rec) => rec.socialSecurityNumber === record.socialSecurityNumber
+    )
+    if (!member) {
+      nonCrewRecords.push({
+        firstName: record.firstName,
+        lastName: record.lastName,
+        role: '',
+        records: [record.id],
+        socialSecurityNumber: record.socialSecurityNumber || '',
+      })
+    } else {
+      nonCrewRecords = nonCrewRecords.map((arrMember) =>
+        arrMember.socialSecurityNumber === member.socialSecurityNumber
+          ? { ...arrMember, records: [...arrMember.records, record.id] }
+          : arrMember
+      )
+    }
+  })
+
+  //add socialSecurityNumber to crewMember records
+  let memberRecords: MemberRecord[] = req.body.memberRecords
+
+  const membersSocial = await conn.getRepository(CrewMember).findByIds(
+    memberRecords.map((member) => member.id),
+    {
+      select: ['socialSecurityNumber', 'id'],
+    }
+  )
+  memberRecords = memberRecords.map((record) => {
+    return {
+      ...record,
+      socialSecurityNumber:
+        membersSocial.find((mem) => mem.id === record.id)?.socialSecurityNumber || '',
+    }
+  })
+
   let form = pdfDoc.getForm()
 
   form.getTextField('vuosi').setText(year)
@@ -41,7 +91,12 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
   form.getTextField('U 3').setText(ship.nationality)
   form.getTextField('U 4').setText(ship.home)
 
-  form = pdfFormFillRecords(form, req.body.memberRecords, ship, req.body.date)
+  form = pdfFormFillRecords(
+    form,
+    [...memberRecords, ...nonCrewRecords],
+    ship,
+    req.body.date
+  )
 
   const pdfBytes = await pdfDoc.save()
   res.write(pdfBytes, 'binary')

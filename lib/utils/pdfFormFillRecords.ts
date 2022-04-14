@@ -1,10 +1,10 @@
-import { MemberRecord } from './../../types/types.d'
+import { MemberRecord, MockMemberRecord } from './../../types/types.d'
 import { Ship } from 'lib/db/entity/Ship'
 import { PDFForm } from 'pdf-lib'
 
 export const pdfFormFillRecords = (
   form: PDFForm,
-  memberRecords: MemberRecord[],
+  memberRecords: (MemberRecord | MockMemberRecord)[],
   ship: Ship,
   date: string
 ): PDFForm => {

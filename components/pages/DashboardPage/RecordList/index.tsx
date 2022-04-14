@@ -1,4 +1,4 @@
-import { Button, Grid, Input, Spacer, Text, useModal } from '@nextui-org/react'
+import { Grid, Input, useModal } from '@nextui-org/react';
 import axios from 'axios'
 import FileButton from 'components/common/FileButton'
 import useConfirmation from 'hooks/useConfirmation'
@@ -10,10 +10,8 @@ import { Ship } from '../../../../lib/db/entity/Ship'
 import ShipRecordService from '../../../../services/ShipRecordService'
 import { AllRecords } from '../../../../types/types'
 import MemberModal from '../Modals/MemberModal'
-import MemberRecordCard from './MemberRecordCard'
 import NoRecordsText from './NoRecordsText'
 import RecordsWrapper from './RecordsWrapper'
-import UnnamedRecordCard from './UnnamedRecordCard'
 
 interface Props {
   ship: Ship
@@ -65,6 +63,7 @@ const RecordList = ({ ship }: Props): JSX.Element | null => {
         {
           date: month,
           memberRecords: records?.memberRecords,
+          unnamedRecordIds: records?.unnamedRecords.map(record => record.id),
         },
         {
           responseType: 'blob',
@@ -74,7 +73,7 @@ const RecordList = ({ ship }: Props): JSX.Element | null => {
       .then((result) => {
         const link = document.createElement('a')
         link.href = URL.createObjectURL(result.data)
-        link.download = `${month}-meripäiväilmoitukset.pdf`
+        link.download = `${month}-Meripalveluilmoitus.pdf`
         document.body.append(link)
         link.click()
         link.remove()

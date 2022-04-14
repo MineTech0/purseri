@@ -45,6 +45,14 @@ export interface MemberRecord extends CrewMember {
   records: Record[]
 }
 
+interface MockMemberRecord {
+  firstName: string
+  lastName: string
+  role: string
+  records: string[]
+  socialSecurityNumber: string
+}
+
 export interface AllRecords {
   memberRecords: MemberRecord[];
   unnamedRecords: Record[]
