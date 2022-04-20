@@ -1,3 +1,4 @@
+import { isAllowedToAccess } from './../../../lib/utils/index';
 import { TypeORMLegacyAdapter } from '@next-auth/typeorm-legacy-adapter'
 import NextAuth from 'next-auth'
 import GoogleProvider from 'next-auth/providers/google'
@@ -35,6 +36,9 @@ export default NextAuth({
       }
       return token
     },
+    async signIn({ user }) {
+      return isAllowedToAccess(user)
+    }
   },
   session: {
     strategy: 'jwt',

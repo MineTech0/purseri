@@ -1,3 +1,5 @@
+import { User } from 'next-auth';
+
 export const convertDate = (date: Date) => {
   return new Date(date).toLocaleDateString('fi-FI').toString()
 }
@@ -13,5 +15,9 @@ export const splitDate = (date: string) => {
  */
 export const convertBirthDateToString = (date: Date) => {
   return ('0' + (new Date(date).getDate())).slice(-2) + ('0' + (new Date(date).getMonth()+1)).slice(-2) + (new Date(date).getFullYear()).toString().slice(-2)
+}
+export const isAllowedToAccess = (user: User) => {
+  const allowedEmails = process.env.ALLOWED_EMAILS?.split(',').map(email => email.trim()) || []
+  return user.email ? allowedEmails.includes(user.email) : false
 }
 
