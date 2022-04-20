@@ -20,7 +20,7 @@ const schema = yup
     firstName: yup.string().required('Nimi vaaditaan'),
     lastName: yup.string().required('Nimi vaaditaan'),
     role: yup.string().required('Toimi vaaditaan'),
-    socialSecurityNumber: yup.string().required('Henkilötunnus vaaditaan'),
+    socialSecurityNumber: yup.string().required('Henkilötunnus vaaditaan').length(11, 'Henkilötunnuksen pitää olla 11 merkkiä pitkä'),
   })
   .required()
 
@@ -114,6 +114,7 @@ const EditMemberModal = ({
             bordered
             fullWidth
             size="lg"
+            maxLength={11}
             label="Henkilötunnus"
             {...register('socialSecurityNumber')}
             helperColor={'error'}

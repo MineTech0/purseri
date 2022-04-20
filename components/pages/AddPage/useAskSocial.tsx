@@ -1,4 +1,4 @@
-import { Button, Container, Input, Modal, Row, Text } from '@nextui-org/react'
+import { Button, Container, Grid, Input, Modal, Row, Spacer, Text } from '@nextui-org/react'
 import React, { useState } from 'react'
 
 interface CallBackI {
@@ -26,9 +26,14 @@ const useAskSocial = () => {
   }
   function AskModal() {
     const [socialNumber, setSocialNumber] = useState('')
+    const [lengthError, setLengthError] = useState('')
 
     const closeHandler = () => {
-      resolveHandler(socialNumber)
+      if (socialNumber.length !== 11) {
+        setLengthError('Henkilötunnuksen pitää olla 11 merkkiä pitkä')
+      } else {
+        resolveHandler(socialNumber)
+      }
     }
 
     return (
@@ -45,18 +50,23 @@ const useAskSocial = () => {
           </Container>
         </Modal.Header>
         <Modal.Body>
-          <Input
-            clearable
-            bordered
-            fullWidth
-            value={socialNumber}
-            onChange={(e) => {
-              setSocialNumber(e.target.value)
-            }}
-            color="primary"
-            size="lg"
-            placeholder="Henkilötunnus"
-          />
+            <Input
+              clearable
+              bordered
+              fullWidth
+              value={socialNumber}
+              minLength={11}
+              maxLength={11}
+              onChange={(e) => {
+                setSocialNumber(e.target.value)
+              }}
+              color="primary"
+              size="lg"
+              placeholder="Henkilötunnus"
+              helperColor={'error'}
+              helperText={lengthError}
+            />
+            <Spacer/>
         </Modal.Body>
         <Modal.Footer>
           <Button auto flat color="error" onClick={closeHandler}>
