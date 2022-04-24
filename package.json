@@ -4,9 +4,11 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start",
+    "start": "next start -p $PORT",
     "lint": "next lint",
-    "typeorm": "node --require ts-node/register ./node_modules/typeorm/cli.js"
+    "typeorm": "node --require ts-node/register ./node_modules/typeorm/cli.js",
+    "test:e2e:open": "cypress open",
+    "test:e2e:run": "cypress run"
   },
   "dependencies": {
     "@geist-ui/core": "^2.3.3",
@@ -33,12 +35,15 @@
   },
   "devDependencies": {
     "@next/eslint-plugin-next": "^12.1.1",
+    "@testing-library/cypress": "^8.0.2",
     "@types/node": "17.0.10",
     "@types/qrcode": "^1.4.2",
     "@types/react": "17.0.38",
     "@typescript-eslint/eslint-plugin": "^5.10.1",
     "@typescript-eslint/parser": "^5.10.1",
     "babel-eslint": "^10.1.0",
+    "cypress": "^9.5.4",
+    "cypress-social-logins": "^1.14.0",
     "eslint": "8.7.0",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-config-airbnb-typescript": "^16.1.0",
