@@ -13,6 +13,7 @@ const allowedRoutes = [
 ]
 
 export default async function middleware(req: NextRequest) {
+    // @ts-ignore
     const token = await getToken({ req })
     console.log(req.page)
     
