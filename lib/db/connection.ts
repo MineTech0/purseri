@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Connection, getConnectionManager, ConnectionOptions, createConnection } from 'typeorm'
+import { Connection, getConnectionManager, createConnection } from 'typeorm'
 
 import { CrewMember } from './entity/CrewMember'
 import {
@@ -11,15 +11,6 @@ import {
 import { Record } from './entity/Record'
 import { Ship } from './entity/Ship'
 
-export const connectionOptions: ConnectionOptions = {
-  type: 'postgres',
-  host: process.env.TYPEORM_HOST,
-  port: Number.parseInt(process.env.TYPEORM_PORT as string),
-  username: process.env.TYPEORM_USERNAME,
-  password: process.env.TYPEORM_PASSWORD,
-  database: process.env.TYPEORM_DATABASE,
-  logging: ['query', 'error'],
-}
 const allEntities = [
   CrewMember,
   Record,
@@ -76,13 +67,8 @@ export async function getConn(name: string = 'Conn1'): Promise<Connection> {
   }
 
   return createConnection({
-    url:process.env.DATABASE_URL,
+    url: process.env.DATABASE_URL,
     type: 'postgres',
-    host: process.env.TYPEORM_HOST,
-    port: Number.parseInt(process.env.TYPEORM_PORT as string),
-    username: process.env.TYPEORM_USERNAME,
-    password: process.env.TYPEORM_PASSWORD,
-    database: process.env.TYPEORM_DATABASE,
     logging: ['error'],
     entities: [
       Record,
@@ -95,5 +81,8 @@ export async function getConn(name: string = 'Conn1'): Promise<Connection> {
     ],
     name:'Conn1',
     synchronize: true,
+    extra: {
+      ssl: true
+  }
   })
 }
