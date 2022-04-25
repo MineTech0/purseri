@@ -76,6 +76,7 @@ export async function getConn(name: string = 'Conn1'): Promise<Connection> {
   }
 
   return createConnection({
+    url:process.env.DATABASE_URL,
     type: 'postgres',
     host: process.env.TYPEORM_HOST,
     port: Number.parseInt(process.env.TYPEORM_PORT as string),

@@ -5,6 +5,7 @@ import GoogleProvider from 'next-auth/providers/google'
 
 export default NextAuth({
   adapter: TypeORMLegacyAdapter({
+    url:process.env.DATABASE_URL,
     type: 'postgres',
     host: process.env.TYPEORM_HOST as string,
     port: parseInt(process.env.TYPEORM_PORT as string),
