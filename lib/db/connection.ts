@@ -82,8 +82,9 @@ export async function getConn(name: string = 'Conn1'): Promise<Connection> {
     name:'Conn1',
     synchronize: true,
     extra: {
-      ssl: true,
-      rejectUnauthorized: false
+      ssl: {
+        rejectUnauthorized: false
+      }
   }
   })
 }

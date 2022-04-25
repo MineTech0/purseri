@@ -9,8 +9,9 @@ export default NextAuth({
     type: 'postgres',
     synchronize: true,
     extra: {
-      ssl: true,
-      rejectUnauthorized: false
+      ssl: {
+        rejectUnauthorized: false
+      }
   }
   }),
   providers: [
