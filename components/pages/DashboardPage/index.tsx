@@ -50,8 +50,8 @@ function DashboardPage({ ships }: { ships: Ship[] }): JSX.Element {
   return (
     <>
      <Head>
-        <title>{`${ship.name ?? 'Hallintapaneeli'}` }</title>
-        <meta property="og:title" content={`${ship.name ?? 'Hallintapaneeli'}`} key="title" />
+        <title>{`${ship?.name ?? 'Hallintapaneeli'}` }</title>
+        <meta property="og:title" content={`${ship?.name ?? 'Hallintapaneeli'}`} key="title" />
       </Head>
     <Layout>
       <p>
