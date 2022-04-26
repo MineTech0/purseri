@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Connection, getConnectionManager, createConnection } from 'typeorm'
+import { Connection, getConnectionManager, createConnection, ConnectionOptions } from 'typeorm'
 
 import { CrewMember } from './entity/CrewMember'
 import {
@@ -20,6 +20,22 @@ const allEntities = [
   VerificationTokenEntity,
   AccountEntity,
 ]
+
+export const connectionOptionsDev : ConnectionOptions = {
+  url: process.env.DATABASE_URL,
+  type: 'postgres',
+  synchronize: true,
+}
+export const connectionOptionsProd : ConnectionOptions = {
+  url: process.env.DATABASE_URL,
+  type: 'postgres',
+  synchronize: false,
+  extra: {
+    ssl: {
+      rejectUnauthorized: false
+    }
+  }
+}
 
 function entitiesChanged(prevEntities: any[], newEntities: any[]): boolean {
   if (prevEntities.length !== newEntities.length) return true
@@ -67,8 +83,6 @@ export async function getConn(name: string = 'Conn1'): Promise<Connection> {
   }
 
   return createConnection({
-    url: process.env.DATABASE_URL,
-    type: 'postgres',
     logging: ['error'],
     entities: [
       Record,
@@ -80,11 +94,6 @@ export async function getConn(name: string = 'Conn1'): Promise<Connection> {
       CrewMember,
     ],
     name:'Conn1',
-    synchronize: true,
-    extra: {
-      ssl: {
-        rejectUnauthorized: false
-      }
-  }
+    ...(process.env.NODE_ENV === 'production' ? connectionOptionsProd: connectionOptionsDev)
   })
 }
