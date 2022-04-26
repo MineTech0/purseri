@@ -1,4 +1,5 @@
 import { Grid, Text, useModal } from '@nextui-org/react'
+import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { useEffect } from 'react'
 import { useResult } from '../../../hooks/useResult'
@@ -83,6 +84,11 @@ const CrewPage = ({ ship, newMember }: Props): JSX.Element => {
   }
 
   return (
+    <>
+    <Head>
+        <title>{`${ship.name} | Miehistö` }</title>
+        <meta property="og:title" content={`${ship.name} | Miehistö`} key="title" />
+      </Head>
     <Layout>
       <Grid.Container gap={2} direction="column">
         <Grid xs={12}>
@@ -116,6 +122,7 @@ const CrewPage = ({ ship, newMember }: Props): JSX.Element => {
         newMember={newMember}
       />
     </Layout>
+    </>
   )
 }
 

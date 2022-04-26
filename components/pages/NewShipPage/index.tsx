@@ -1,3 +1,4 @@
+import Head from 'next/head'
 import { useRouter } from 'next/router'
 import React, { useState } from 'react'
 import ShipService from '../../../services/ShipService'
@@ -33,9 +34,15 @@ const NewShipPage = (props: Props): JSX.Element => {
   if (result) return <ResultPage message={result.message} type={result.type} />
 
   return (
+    <>
+    <Head>
+        <title>Lisää alus</title>
+        <meta property="og:title" content='Lisää alus' key="title" />
+      </Head>
     <Layout>
       <NewShipForm sendForm={sendFormHandler} />
     </Layout>
+    </>
   )
 }
 

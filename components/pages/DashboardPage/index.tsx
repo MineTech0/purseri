@@ -8,6 +8,7 @@ import ShipInfo from "../../common/ShipInfo";
 import ShipSelector from "./ShipSelector";
 import { Ship } from "../../../lib/db/entity/Ship";
 import ShipModal from "./Modals/ShipModal";
+import Head from "next/head";
 
 interface ModalStateI {
   [key: string]: {
@@ -47,6 +48,11 @@ function DashboardPage({ ships }: { ships: Ship[] }): JSX.Element {
   };
 
   return (
+    <>
+     <Head>
+        <title>{`${ship.name ?? 'Hallintapaneeli'}` }</title>
+        <meta property="og:title" content={`${ship.name ?? 'Hallintapaneeli'}`} key="title" />
+      </Head>
     <Layout>
       <p>
         Signed in as {session?.user.name || null}{" "}
@@ -75,6 +81,7 @@ function DashboardPage({ ships }: { ships: Ship[] }): JSX.Element {
       </Grid.Container>
       <ShipModal {...modalStates.shipModal} ship={ship} />
     </Layout>
+    </>
   );
 }
 

@@ -9,6 +9,7 @@ import ResultPage from '../../common/ResultPage'
 import ShipRecordService from '../../../services/ShipRecordService'
 import ShipCrewMemberService from 'services/ShipCrewMemberService'
 import useAskSocial from './useAskSocial'
+import Head from 'next/head'
 
 interface Props {
   ship: Ship
@@ -63,6 +64,10 @@ const AddPage = ({ ship }: Props): JSX.Element => {
 
   return (
     <>
+     <Head>
+        <title>{`Ilmoita meripäivä | ${ship.name}`}</title>
+        <meta property="og:title" content={`Ilmoita meripäivä | ${ship.name}`} key="title" />
+      </Head>
       <Layout>
         <Grid.Container direction="column" gap={2}>
           <Grid>
