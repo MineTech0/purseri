@@ -23,6 +23,7 @@ class MyDocument extends Document {
           <meta name="msapplication-TileColor" content="#da532c" />
           <meta name="theme-color" content="#ffffff" />
           <meta name="apple-mobile-web-app-status-bar" content="#0070f3" />
+          <meta property="og:title" content="Purseri" />
         </Head>
         <body>
           <Main />

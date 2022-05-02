@@ -26,7 +26,7 @@ const NewShipPage = (props: Props): JSX.Element => {
       .catch((error: string) => {
         setResult({
           type: 'error',
-          message: error.toString(),
+          message: 'Laivan lisääminen epäonnistui',
         })
       })
   }

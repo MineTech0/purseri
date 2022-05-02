@@ -32,7 +32,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse<{ exists: boole
     else return res.status(200).json({ exists: false })
 
     } else {
-      return res.status(400)
+      return res.status(400).end()
     }
   }
 }

@@ -39,8 +39,11 @@ import { getToken } from 'next-auth/jwt'
 
     if (errors.length > 0) {
       return res.status(400).json(errors)
-    } else {
+    }else if(!token?.user.id){
+      return res.status(400).end('No id found')
+    }else {
       const user = await conn.getRepository(UserEntity).findOne(token?.user.id)
+      console.log(user)
       ship.user = user as UserEntity
       await conn.getRepository(Ship).save(ship)
       return res.status(200).json(ship)
