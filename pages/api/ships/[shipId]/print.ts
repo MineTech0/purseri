@@ -20,9 +20,6 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
   const ship = await conn.getRepository(Ship).findOne(shipId)
   if (!ship) return res.status(404).json('No ship found')
 
-  const pdfDoc = await PDFDocument.load(
-    fs.readFileSync(path.resolve('./files', 'Merimiesrekisteri-ilmoitus.pdf'))
-  )
   const { month, year } = splitDate(req.body.date as string)
 
   //add non crew records to report
@@ -30,6 +27,9 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
 
   const unnamedRecords = await conn.getRepository(Record).findByIds(unnamedRecordIds, {
     select: ['firstName', 'lastName', 'socialSecurityNumber', 'id'],
+    where: {
+      ship: ship,
+    },
   })
 
   let nonCrewRecords: MockMemberRecord[] = []
@@ -40,6 +40,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     )
     if (!member) {
       nonCrewRecords.push({
+        id: record.id,
         firstName: record.firstName,
         lastName: record.lastName,
         role: '',
@@ -62,6 +63,9 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     memberRecords.map((member) => member.id),
     {
       select: ['socialSecurityNumber', 'id'],
+      where: {
+        ship: ship,
+      },
     }
   )
   memberRecords = memberRecords.map((record) => {
@@ -72,34 +76,45 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     }
   })
 
-  let form = pdfDoc.getForm()
+  const combinedRecords = [...memberRecords, ...nonCrewRecords]
 
-  form.getTextField('vuosi').setText(year)
-  form.getTextField('kk').setText(month)
-  form.getTextField('alus').setText(ship.name)
-  form.getTextField('tunn').setText(ship.idLetters)
-  form.getTextField('imo').setText(ship.imo)
-  form.getTextField('gt').setText(ship.gt.toString())
-  form.getTextField('gt').setText(ship.gt.toString())
-  form.getTextField('varust').setText(ship.owner)
-  form.getTextField('osoite').setText(ship.address)
-  form.getTextField('puh').setText('')
-  form.getTextField('Sähköposti').setText('')
-  form.getTextField('Sähköposti').setText('')
-  form.getTextField('U 1').setText(ship.power.toString())
-  form.getTextField('U 2').setText(ship.length.toString())
-  form.getTextField('U 3').setText(ship.nationality)
-  form.getTextField('U 4').setText(ship.home)
+  //Split records to multiple files of 17 records
+  const recordChunks = []
 
-  form = pdfFormFillRecords(
-    form,
-    [...memberRecords, ...nonCrewRecords],
-    ship,
-    req.body.date
+  for (let i = 0; i < combinedRecords.length; i += 17) {
+    recordChunks.push(combinedRecords.slice(i, i + 17))
+  }
+
+  let files = await Promise.all(
+    recordChunks.map(async (records) => {
+      const pdfDoc = await PDFDocument.load(
+        fs.readFileSync(path.resolve('./files', 'Merimiesrekisteri-ilmoitus.pdf'))
+      )
+      let form = pdfDoc.getForm()
+
+      form.getTextField('vuosi').setText(year)
+      form.getTextField('kk').setText(month)
+      form.getTextField('alus').setText(ship.name)
+      form.getTextField('tunn').setText(ship.idLetters)
+      form.getTextField('imo').setText(ship.imo)
+      form.getTextField('gt').setText(ship.gt.toString())
+      form.getTextField('gt').setText(ship.gt.toString())
+      form.getTextField('varust').setText(ship.owner)
+      form.getTextField('osoite').setText(ship.address)
+      form.getTextField('puh').setText('')
+      form.getTextField('Sähköposti').setText('')
+      form.getTextField('Sähköposti').setText('')
+      form.getTextField('U 1').setText(ship.power.toString())
+      form.getTextField('U 2').setText(ship.length.toString())
+      form.getTextField('U 3').setText(ship.nationality)
+      form.getTextField('U 4').setText(ship.home)
+
+      form = pdfFormFillRecords(form, records, ship, req.body.date)
+
+      return pdfDoc.saveAsBase64({ dataUri: true })
+    })
   )
 
-  const pdfBytes = await pdfDoc.save()
-  res.write(pdfBytes, 'binary')
-  res.end()
+  res.json({ files })
 }
 export default apiAuth(handler)

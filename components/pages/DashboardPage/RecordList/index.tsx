@@ -58,7 +58,7 @@ const RecordList = ({ ship }: Props): JSX.Element | null => {
 
   const downloadNote = () => {
     axios
-      .post<Blob>(
+      .post<{files: string[]}>(
         `/api/ships/${ship.id}/print`,
         {
           date: month,
@@ -66,19 +66,20 @@ const RecordList = ({ ship }: Props): JSX.Element | null => {
           unnamedRecordIds: records?.unnamedRecords.map(record => record.id),
         },
         {
-          responseType: 'blob',
           timeout: 30000,
         }
       )
       .then((result) => {
-        const link = document.createElement('a')
-        link.href = URL.createObjectURL(result.data)
-        link.download = `${month}-Meripalveluilmoitus.pdf`
-        document.body.append(link)
-        link.click()
-        link.remove()
-        // in case the Blob uses a lot of memory
-        setTimeout(() => URL.revokeObjectURL(link.href), 7000)
+        result.data.files.forEach((file,i) =>{
+          const link = document.createElement('a')
+          link.href = file
+          link.download = `${month}-Meripalveluilmoitus-${i+1}.pdf`
+          document.body.append(link)
+          link.click()
+          link.remove()
+          // in case the Blob uses a lot of memory
+          setTimeout(() => URL.revokeObjectURL(link.href), 7000)
+        })
       })
   }
 

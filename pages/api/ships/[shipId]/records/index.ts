@@ -84,7 +84,7 @@ const handler = nc<
       if (!ship) return res.status(400)
       record.ship = ship
       await conn.getRepository(Record).save(record)
-      return res.status(201).json(record)
+      return res.status(201).end('Kiitos Ilmoituksesta')
     }
   })
 

@@ -29,12 +29,12 @@ export const pdfFormFillRecords = (
         .getTextField(number+'_1_nimi')
         .setText(`${memberRecord.lastName} ${memberRecord.firstName}`)
       form.getTextField(number+'_2_hetu').setText(memberRecord.socialSecurityNumber)
-      form.getTextField(number+'__3_kansalaisuus').setText('FI')
+      form.getTextField(number+'_3_kansalaisuus').setText('FI')
       form.getTextField(number+'_4_toimii').setText(memberRecord.role)
       form.getTextField(number+'_5_alkoi').setText(firstDay.toLocaleDateString('fi-FI'))
       form.getTextField(number+'_6_loppui').setText(lastDay.toLocaleDateString('fi-FI'))
-      form.getTextField(number+'_7_lkm' + number).setText(memberRecord.records.length.toString())
-      form.getTextField(number+'_8_alue' + number).setText(ship.area.toString())
+      form.getTextField(number+'_7_lkm').setText(memberRecord.records.length.toString())
+      form.getTextField(number+'_8_alue').setText(ship.area.toString())
     }
   })
   return form
