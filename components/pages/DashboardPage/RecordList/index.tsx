@@ -1,4 +1,4 @@
-import { Grid, Input, useModal } from '@nextui-org/react';
+import { Grid, Input, useModal } from '@nextui-org/react'
 import axios from 'axios'
 import FileButton from 'components/common/FileButton'
 import useConfirmation from 'hooks/useConfirmation'
@@ -39,15 +39,20 @@ const RecordList = ({ ship }: Props): JSX.Element | null => {
     router.push(`dashboard/ship/${ship.id}/crew?newMemberRecordId=${recordId}`)
   }
 
-  const deleteHandler = async(recordId: string) => {
-    if(await getConfirmation('Haluatko varmasti poistaa ilmoituksen')){
+  const deleteHandler = async (recordId: string) => {
+    if (await getConfirmation('Haluatko varmasti poistaa ilmoituksen')) {
       ShipRecordService.deleteRecord(ship.id, recordId)
         .then(() => {
           if (records) {
+            setVisible(false)
             setRecords({
-              memberRecords: records.memberRecords,
-              unnamedRecords: records.unnamedRecords.filter(record => record.id !== recordId),
+              memberRecords: records.memberRecords.map((member) => ({
+                ...member,
+                records: member.records.filter((record) => record.id !== recordId),
+              })).filter(member => member.records.length > 0),
+              unnamedRecords: records.unnamedRecords.filter((record) => record.id !== recordId),
             })
+
           }
         })
         .catch((error) => {
@@ -58,22 +63,22 @@ const RecordList = ({ ship }: Props): JSX.Element | null => {
 
   const downloadNote = () => {
     axios
-      .post<{files: string[]}>(
+      .post<{ files: string[] }>(
         `/api/ships/${ship.id}/print`,
         {
           date: month,
           memberRecords: records?.memberRecords,
-          unnamedRecordIds: records?.unnamedRecords.map(record => record.id),
+          unnamedRecordIds: records?.unnamedRecords.map((record) => record.id),
         },
         {
           timeout: 30000,
         }
       )
       .then((result) => {
-        result.data.files.forEach((file,i) =>{
+        result.data.files.forEach((file, i) => {
           const link = document.createElement('a')
           link.href = file
-          link.download = `${month}-Meripalveluilmoitus-${i+1}.pdf`
+          link.download = `${month}-Meripalveluilmoitus-${i + 1}.pdf`
           document.body.append(link)
           link.click()
           link.remove()
@@ -113,7 +118,7 @@ const RecordList = ({ ship }: Props): JSX.Element | null => {
         />
       )}
 
-      <MemberModal crewMember={selectedMember} bindings={bindings} />
+      <MemberModal crewMember={selectedMember} bindings={bindings} deleteHandler={deleteHandler} />
       <AskConfirmationModal />
     </Grid.Container>
   )
