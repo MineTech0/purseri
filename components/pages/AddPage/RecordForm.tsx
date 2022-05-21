@@ -1,4 +1,4 @@
-import { Button, Grid, Input, Radio, Text, Textarea } from '@nextui-org/react';
+import { Button, Card, Grid, Input, Radio, Text, Textarea } from '@nextui-org/react'
 import { Controller, SubmitHandler, useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
@@ -15,7 +15,7 @@ const schema = yup
     reason: yup.string().required('Tehtävä vaaditaan'),
     date: yup.date().required('Päivä vaaditaan'),
     info: yup.string().default(''),
-    birthDate: yup.date().required('Syntymäpäivä vaaditaan')
+    birthDate: yup.date().required('Syntymäpäivä vaaditaan'),
   })
   .required()
 
@@ -39,7 +39,7 @@ const RecordForm = ({ sendForm }: Props): JSX.Element => {
             label="Etunimi*"
             color="default"
             {...register('firstName')}
-            autoComplete='given-name'
+            autoComplete="given-name"
             helperColor={'error'}
             helperText={errors.firstName?.message}
           />
@@ -82,27 +82,27 @@ const RecordForm = ({ sendForm }: Props): JSX.Element => {
         </Grid>
         <Grid>
           <Text size={14}>Syy*</Text>
-        <Controller
-        control={control}
-        name="reason"
-        render={({ field }) => {
-          const { onChange, value } = field;
-          return (
-            <Radio.Group css={{ w: '100%' }} size="sm" value={value}>
-              <Radio onChange={(e) => onChange(e.nativeEvent)} value="Kaupallinen ajo">
-                Kaupallinen ajo
-              </Radio>
-              <Radio onChange={(e) => onChange(e.nativeEvent)} value="Partioajo">
-                Partioajo
-              </Radio>
-              <Radio onChange={(e) => onChange(e.nativeEvent)} value="Talkoopäivä">
-                Talkoopäivä
-              </Radio>
-              <Text color='error'>{errors.reason?.message}</Text>
-            </Radio.Group> 
-          );
-        }}
-      />
+          <Controller
+            control={control}
+            name="reason"
+            render={({ field }) => {
+              const { onChange, value } = field
+              return (
+                <Radio.Group css={{ w: '100%' }} size="sm" value={value}>
+                  <Radio onChange={(e) => onChange(e.nativeEvent)} value="Kaupallinen ajo">
+                    Kaupallinen ajo
+                  </Radio>
+                  <Radio onChange={(e) => onChange(e.nativeEvent)} value="Partioajo">
+                    Partioajo
+                  </Radio>
+                  <Radio onChange={(e) => onChange(e.nativeEvent)} value="Talkoopäivä">
+                    Talkoopäivä
+                  </Radio>
+                  <Text color="error">{errors.reason?.message}</Text>
+                </Radio.Group>
+              )
+            }}
+          />
         </Grid>
         <Grid>
           <Textarea
