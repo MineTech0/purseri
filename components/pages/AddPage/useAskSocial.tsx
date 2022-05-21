@@ -1,5 +1,5 @@
-import { Button, Container, Grid, Input, Modal, Row, Spacer, Text } from '@nextui-org/react'
-import React, { useState } from 'react'
+import { Button, Container, Input, Modal, Spacer, Text } from '@nextui-org/react';
+import { useState } from 'react';
 
 interface CallBackI {
   resolve: (result: string) => void
@@ -28,16 +28,19 @@ const useAskSocial = () => {
     const [socialNumber, setSocialNumber] = useState('')
     const [lengthError, setLengthError] = useState('')
 
-    const closeHandler = () => {
-      if (socialNumber.length !== 11) {
+    const closeHandler = (submit: boolean) => {
+      
+      if (socialNumber.length !== 11 && submit) {
         setLengthError('Henkilötunnuksen pitää olla 11 merkkiä pitkä')
-      } else {
+      } else if(!submit){
+        setVisible(false)
+      }else {
         resolveHandler(socialNumber)
       }
     }
 
     return (
-      <Modal closeButton aria-labelledby="modal-title" open={visible} onClose={closeHandler}>
+      <Modal closeButton aria-labelledby="modal-title" open={visible} onClose={()=> closeHandler(false)}>
         <Modal.Header>
           <Container alignContent="center">
             <Text b size={24}>
@@ -69,10 +72,10 @@ const useAskSocial = () => {
             <Spacer/>
         </Modal.Body>
         <Modal.Footer>
-          <Button auto flat color="error" onClick={closeHandler}>
+          <Button auto flat color="error" onClick={() => closeHandler(false)}>
             Peruuta
           </Button>
-          <Button auto onClick={closeHandler}>
+          <Button auto onClick={() => closeHandler(true)}>
             Lähetä
           </Button>
         </Modal.Footer>
