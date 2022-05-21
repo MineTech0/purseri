@@ -1,6 +1,5 @@
-import { Button, Col, Grid, Input, Row, Text, Textarea } from '@nextui-org/react'
-import React from 'react'
-import { SubmitHandler, useForm } from 'react-hook-form'
+import { Button, Grid, Input, Radio, Text, Textarea } from '@nextui-org/react';
+import { Controller, SubmitHandler, useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
 import { RecordFormData } from '../../../types/types'
@@ -24,7 +23,7 @@ const RecordForm = ({ sendForm }: Props): JSX.Element => {
   const {
     register,
     handleSubmit,
-    watch,
+    control,
     formState: { errors },
   } = useForm<RecordFormData>({
     resolver: yupResolver(schema),
@@ -82,15 +81,28 @@ const RecordForm = ({ sendForm }: Props): JSX.Element => {
           />
         </Grid>
         <Grid>
-          <Input
-            bordered
-            css={{ w: '100%' }}
-            label="Syy*"
-            color="default"
-            {...register('reason')}
-            helperColor={'error'}
-            helperText={errors.reason?.message}
-          />
+          <Text size={14}>Syy*</Text>
+        <Controller
+        control={control}
+        name="reason"
+        render={({ field }) => {
+          const { onChange, value } = field;
+          return (
+            <Radio.Group css={{ w: '100%' }} size="sm" value={value}>
+              <Radio onChange={(e) => onChange(e.nativeEvent)} value="Kaupallinen ajo">
+                Kaupallinen ajo
+              </Radio>
+              <Radio onChange={(e) => onChange(e.nativeEvent)} value="Partioajo">
+                Partioajo
+              </Radio>
+              <Radio onChange={(e) => onChange(e.nativeEvent)} value="Talkoopäivä">
+                Talkoopäivä
+              </Radio>
+              <Text color='error'>{errors.reason?.message}</Text>
+            </Radio.Group> 
+          );
+        }}
+      />
         </Grid>
         <Grid>
           <Textarea
