@@ -1,4 +1,4 @@
-import { Grid, Input, useModal } from '@nextui-org/react'
+import { Grid, Input, Loading, useModal } from '@nextui-org/react'
 import axios from 'axios'
 import FileButton from 'components/common/FileButton'
 import useConfirmation from 'hooks/useConfirmation'
@@ -24,6 +24,7 @@ const RecordList = ({ ship }: Props): JSX.Element | null => {
   const [month, setMonth] = useState(getMonthAndYear())
   const { AskConfirmationModal, getConfirmation } = useConfirmation()
   const router = useRouter()
+  const [downloading, setDownloading] = useState(false)
 
   useEffect(() => {
     ShipRecordService.getShipRecords(ship.id, month).then((rec) => {
@@ -62,6 +63,7 @@ const RecordList = ({ ship }: Props): JSX.Element | null => {
   }
 
   const downloadNote = () => {
+    setDownloading(true)
     axios
       .post<{ files: string[] }>(
         `/api/ships/${ship.id}/print`,
@@ -85,6 +87,9 @@ const RecordList = ({ ship }: Props): JSX.Element | null => {
           // in case the Blob uses a lot of memory
           setTimeout(() => URL.revokeObjectURL(link.href), 7000)
         })
+        setDownloading(false)
+      }).catch( () =>{
+        setDownloading(false)
       })
   }
 
@@ -103,7 +108,7 @@ const RecordList = ({ ship }: Props): JSX.Element | null => {
         </Grid>
         {!records || records.memberRecords.length + records.unnamedRecords.length !== 0 ? (
           <Grid>
-            <FileButton onClick={() => downloadNote()} />
+            {downloading ? <Loading/> : <FileButton onClick={() => downloadNote()} /> }    
           </Grid>
         ) : null}
       </Grid.Container>
