@@ -4,6 +4,7 @@ import { NextUIProvider } from '@nextui-org/react'
 import { SessionProvider, signIn, useSession } from 'next-auth/react'
 import React from 'react'
 import { GeistProvider } from '@geist-ui/core';
+import SplashScreen from 'components/common/SplashScreen'
 
 const Auth: React.FC<{}> = ({ children }) => {
   const { data: session, status } = useSession()
@@ -19,7 +20,7 @@ const Auth: React.FC<{}> = ({ children }) => {
 
   // Session is being fetched, or no user.
   // If no user, useEffect() will redirect.
-  return <div>Loading...</div>
+  return <SplashScreen/>
 }
 
 const RESTRICTED_PATHS = ['/dashboard']
