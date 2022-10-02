@@ -9,6 +9,8 @@ export interface RecordFormData {
   date: Date
   info: string
   birthDate: Date
+  privacy: boolean
+  acceptTrafi: boolean
 }
 export interface RecordFormDataWithShip extends RecordFormData {
   shipId: string
@@ -38,7 +40,7 @@ export interface CrewMemberFormData {
   firstName: string
   lastName: string
   role: string
-  socialSecurityNumber: string
+  socialSecurityNumber?: string
 }
 
 export interface MemberRecord extends CrewMember {

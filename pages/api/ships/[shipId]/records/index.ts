@@ -65,8 +65,15 @@ const handler = nc<
     const memberRepo = conn.getRepository(CrewMember)
 
     const { shipId } = req.query
+
+    //Validate privacy policy and Traficom permission
+    if(!req.body.privacy || !req.body.acceptTrafi){
+      return res.status(400)
+    }
+
     let record = recordRepo.create(req.body as Object)
     const errors = await validate(record)
+
 
     if (errors.length > 0) {
       return res.status(400).json(errors)

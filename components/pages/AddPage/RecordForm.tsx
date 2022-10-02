@@ -1,4 +1,4 @@
-import { Button, Card, Grid, Input, Radio, Text, Textarea } from '@nextui-org/react'
+import { Button, Card, Checkbox, Grid, Input, Radio, Text, Textarea, Link } from '@nextui-org/react'
 import { Controller, SubmitHandler, useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
@@ -12,10 +12,15 @@ const schema = yup
   .object({
     firstName: yup.string().required('Nimi vaaditaan'),
     lastName: yup.string().required('Nimi vaaditaan'),
-    reason: yup.string().required('Tehtävä vaaditaan'),
-    date: yup.date().required('Päivä vaaditaan'),
+    reason: yup.string().required('Syy vaaditaan'),
+    date: yup
+      .date()
+      .required('Päivä vaaditaan')
+      .typeError('Päivä vaaditaan'),
     info: yup.string().default(''),
-    birthDate: yup.date().required('Syntymäpäivä vaaditaan'),
+    birthDate: yup.date().required('Syntymäpäivä vaaditaan').typeError('Syntymäpäivä vaaditaan'),
+    privacy: yup.bool().default(false).oneOf([true], 'Hyväksy tietosuojaseloste'),
+    acceptTrafi: yup.bool().default(false).oneOf([true], 'Hyväksy tietojen luovutus'),
   })
   .required()
 
@@ -36,7 +41,7 @@ const RecordForm = ({ sendForm }: Props): JSX.Element => {
           <Input
             bordered
             css={{ w: '100%' }}
-            label="Etunimi*"
+            label={'Etunimi*'}
             color="default"
             {...register('firstName')}
             autoComplete="given-name"
@@ -113,6 +118,47 @@ const RecordForm = ({ sendForm }: Props): JSX.Element => {
             {...register('info')}
             helperColor={'error'}
             helperText={errors.info?.message}
+          />
+        </Grid>
+        <Grid>
+          <Controller
+            control={control}
+            name="privacy"
+            render={({ field }) => {
+              const { onChange, value } = field
+              return (
+                <>
+                  <Checkbox css={{ w: '100%' }} size="sm" onChange={onChange} checked={value}>
+                    <Text>
+                      Olen lukenut ja hyväksyn{' '}
+                      <Link href={'/privacy-policy.html'} target={'_blank'} css={{ marginLeft: 2 }}>
+                        Tietosuojaselosteen
+                      </Link>
+                      <Text color="error">{errors.privacy?.message}</Text>
+                    </Text>
+                  </Checkbox>
+                </>
+              )
+            }}
+          />
+        </Grid>
+        <Grid>
+          <Controller
+            control={control}
+            name="acceptTrafi"
+            render={({ field }) => {
+              const { onChange, value } = field
+              return (
+                <>
+                  <Checkbox css={{ w: '100%' }} size="sm" onChange={onChange} checked={value}>
+                    <Text>
+                      Hyväksyn tietojeni luovutuksen Traficomille meripalveluilmoituksessa
+                      <Text color="error">{errors.acceptTrafi?.message}</Text>
+                    </Text>
+                  </Checkbox>
+                </>
+              )
+            }}
           />
         </Grid>
         <Grid>
